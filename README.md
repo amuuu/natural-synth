@@ -12,7 +12,8 @@ A web panel is provided to the artist to manage the synth and mesh network remot
 - See the data each node is transmitting to the server or the data that's being transmitted to the main processing node (in real-time)
 - Change the natural parameters that are normally set by GPIO pins remotely. (aka control and paly with the synth remotely from the panel)
 
-For a cleaner development enviornment, different parts of Natural are divided into different repositories. You can find them here: [natural-server](), [natrual-raspberry](), and [natural-peripheral-node]().
+For a cleaner development enviornment, different parts of Natural are divided into different repositories. You can find them here: [natural-server](), [natrual-raspberry](), and [natural-peripheral-node](). This repository brings all the different parts together and is a guide on how you can build and use Natural!
+
 # How to build Natural for yourself?
 
 ## 1) Sensor units
