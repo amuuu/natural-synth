@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+
+    <title>Natural Synthesizer Panel</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/19afbf8bbb.js"></script>
+    
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename = '/css/main.css') }}" type="text/css" rel="stylesheet">
+
+  </head>
+
+  <body class="text-center">
+        <div class="header">
+            <span class="header-title">Natural Synthesizer</span>
+            <a class="header-logout" href="#">/ Logout</a>
+        </div>
+        
+        
+        <div class="container nodes">
+            <div class="row node">
+                <div class="col-md-3"></div>
+                
+                <div class="col-md-6 node-content">
+                    <div class="node-info">
+                        <div class="node-name">
+                            NY-NODE
+                        </div>
+                        <div class="node-ip">
+                            192.168.0.1
+                        </div>
+                    </div>
+                    <div class="node-buttons">
+                            <div class="node-setting-button">
+                                    <button class="btn btn-md btn-secondary btn-block" type="submit"><i class="fa fa-cog"></i></button>
+                            </div>
+                        <div class="node-toggle-button">
+                            <button class="btn btn-md btn-info btn-block" type="submit">Enable Node</button>
+                            <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit">Disable</button> -->
+
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 node-content">
+                    <div class="node-data">
+                        <span class="content">
+                            <pre><code>&nbsp;&nbsp; 1 . 2 . 3 . 4 . 5 . 6 . 7</code></pre>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+
+            <div class="row node">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 node-content">
+                    <div class="node-info">
+                        <div class="node-name">
+                            TEHRAN-NODE
+                        </div>
+                        <div class="node-ip">
+                            192.168.0.2
+                        </div>
+                    </div>
+                    <div class="node-buttons">
+                            <div class="node-setting-button">
+                                    <button class="btn btn-md btn-secondary btn-block" type="submit"><i class="fa fa-cog"></i></button>
+                            </div>
+                        <div class="node-toggle-button">
+                            <button class="btn btn-md btn-secondary btn-block" type="submit">Disable Node</button>
+                            <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit">Disable</button> -->
+
+                        </div>
+                        
+                    </div>
+                
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 node-content">
+                    <div class="node-data">
+                        <span class="content">
+                            <pre><code>&nbsp;&nbsp; 1 . 2 . 3 . 4 . 5 . 6 . 7</code></pre>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+
+            <div class="row node">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 node-content">
+                        <div class="node-info">
+                            <div class="node-name">
+                                AMSETERDAM-NODE
+                            </div>
+                            <div class="node-ip">
+                                192.168.0.3
+                            </div>
+                        </div>
+                        <div class="node-buttons">
+                                <div class="node-setting-button">
+                                        <button class="btn btn-md btn-secondary btn-block" type="submit"><i class="fa fa-cog"></i></button>
+                                </div>
+                            <div class="node-toggle-button">
+                                <button class="btn btn-md btn-secondary btn-block" type="submit">Disable Node</button>
+                                <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit">Disable</button> -->
+    
+                            </div>
+                            
+                        </div>
+                    
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 node-content">
+                    <div class="node-data">
+                        <span class="content">
+                            <pre><code>&nbsp;&nbsp; 1 . 2 . 3 . 4 . 5 . 6 . 7</code></pre>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+
+            
+        </div>
+  </body>
+</html>
