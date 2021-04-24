@@ -1,6 +1,6 @@
 # Server
 
-To run the server, first run these commands in this directory to initialze the venv:
+To run the server, first run these commands in this directory to initialize the venv:
 ```
 $ python3 -m venv venv
 $ source venv/bin/activate
