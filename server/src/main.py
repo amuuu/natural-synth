@@ -5,7 +5,7 @@ from . import db
 
 main = Blueprint('main', __name__)
 
-from mqtt import mqtt
+# from mqtt import mqtt
 
 @main.route('/')
 @login_required
