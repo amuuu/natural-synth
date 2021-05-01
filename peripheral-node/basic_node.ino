@@ -7,6 +7,8 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
+const int SENSOR_INPUT_PIN = 5;
+
 const char* ssid = "........";
 const char* password = "........";
 const char* mqtt_server = "broker.mqtt-dashboard.com";
