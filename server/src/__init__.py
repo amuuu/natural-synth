@@ -13,6 +13,16 @@ def create_app():
 
     db.init_app(app)
 
+    app.config['SECRET'] = 'my secret key'
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.config['MQTT_BROKER_URL'] = 'broker.hivemq.com'
+    app.config['MQTT_BROKER_PORT'] = 1883
+    app.config['MQTT_USERNAME'] = ''
+    app.config['MQTT_PASSWORD'] = ''
+    app.config['MQTT_KEEPALIVE'] = 5
+    app.config['MQTT_TLS_ENABLED'] = False
+    app.config['MQTT_CLEAN_SESSION'] = True
+
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -33,6 +43,5 @@ def create_app():
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-
 
     return app
