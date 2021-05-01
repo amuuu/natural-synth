@@ -92,3 +92,9 @@ body {
 .node {
     margin-top:5%;
 }
+
+.node-stat
+{
+    font-weight: lighter !important;
+    font-size: 0.5 !important;
+}
