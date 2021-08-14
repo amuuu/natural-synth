@@ -1,8 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from dotenv import load_dotenv
+import paho.mqtt.client as mqtt
+import os
 
-# init SQLAlchemy so we can use it later in our models
+from .mqtt import on_connect, on_message
+
+load_dotenv()
+
 db = SQLAlchemy()
 
 def create_app():
@@ -13,16 +19,13 @@ def create_app():
 
     db.init_app(app)
 
-    app.config['SECRET'] = 'my secret key'
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.config['MQTT_BROKER_URL'] = 'broker.hivemq.com'
-    app.config['MQTT_BROKER_PORT'] = 1883
-    app.config['MQTT_USERNAME'] = ''
-    app.config['MQTT_PASSWORD'] = ''
-    app.config['MQTT_KEEPALIVE'] = 5
-    app.config['MQTT_TLS_ENABLED'] = False
-    app.config['MQTT_CLEAN_SESSION'] = True
-
+    client = mqtt.Client(client_id="hossein_iot")
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+    client.username_pw_set(os.getenv('MQTT_USER'), os.getenv('MQTT_PASS'))
+    client.connect(os.getenv('MQTT_URL'), os.getenv('MQTT_PORT'))    
+    client.loop_forever()
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

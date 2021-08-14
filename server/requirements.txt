@@ -1,4 +1,6 @@
 flask
 flask-sqlalchemy
 flask-login
-flask-mqtt
+paho-mqtt
+jwt
+python-dotenv

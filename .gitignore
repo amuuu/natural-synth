@@ -1,2 +1,5 @@
 server/src/__pycache__/
 server/venv/
+
+server/src/.env
+server/src/db.sqlite
