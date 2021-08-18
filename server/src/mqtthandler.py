@@ -2,10 +2,11 @@ import json
 import paho.mqtt.client as mqtt
 
 # IMPORTANT IMPORTANT 
-# After their name / activeself change, must send status update to server
-# currently the server sends the command, but its own list doesnt change at all
-
-# after each node recieves changes information (whether it being active self or name change), it must send a node_introduction command to the network
+# in the beginning each node should subscribe to topics
+# then it should introduce itself
+# then start sending data
+# After each node recieves changes information (whether it being active self or name change), it must send a node_introduction command to the network
+# then start sendign data again
 
 """
 JSON FORMAT:
