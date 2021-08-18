@@ -1,0 +1,52 @@
+{% for node in node_info %}
+    
+    <div class="row node">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 node-content">
+            <div class="node-info">
+                <div class="node-name">
+                    <span class="node-stat">
+                        {% if node.is_active %}
+                        <i title="Node currently conncted" class="fa fa-check"></i>
+                        {% endif %}
+                        {% if not node.is_active %}
+                        <i title="Node currently disconnected" class="fa fa-times"></i>
+                        {% endif %}
+                    </span>
+                    {{ node.name }}
+                </div>
+                <div class="node-ip">
+                    {{ node.sensor_type }}
+                </div>
+            </div>
+            <div class="node-buttons">
+                    <div class="node-setting-button">
+                            <button class="btn btn-md btn-secondary btn-block" type="submit" disabled><i class="fa fa-cog"></i></button>
+                    </div>
+                <div class="node-toggle-button">
+                    {% if node.is_active %}
+                    <button class="btn btn-md btn-danger btn-block" type="submit">Disable Node</button>
+                    {% endif %}
+                    {% if not node.is_active %}
+                    <button class="btn btn-md btn-success btn-block" type="submit">Enable Node</button>
+                    {% endif %}
+                </div>
+                
+            </div>
+        
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 node-content">
+            <div class="node-data">
+                <span class="content">
+                    <pre><code>&nbsp;&nbsp; {{ node.value }}</code></pre>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+{% endfor %}

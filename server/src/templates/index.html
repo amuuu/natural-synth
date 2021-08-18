@@ -12,7 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/19afbf8bbb.js"></script>
@@ -27,132 +27,29 @@
             <span class="header-title">Natural Synthesizer</span>
             <a class="header-logout" href="{{ url_for('auth.logout') }}">/ Logout ({{ email }})</a>
         </div>
+        <br>
+        <button id="refresh_button">Refresh</button>
         
-        
-        <div class="container nodes">
-            <div class="row node">
-                <div class="col-md-3"></div>
-                
-                <div class="col-md-6 node-content">
-                    <div class="node-info">
-                        <div class="node-name">
-                            <span class="node-stat">
-                                <i title="Node currently connected" class="fa fa-check"></i>
-                            </span>
-                            NY-NODE 
-                        </div>
-                        <div class="node-ip">
-                            192.168.0.1
-                        </div>
-                    </div>
-                    <div class="node-buttons">
-                            <div class="node-setting-button">
-                                    <button class="btn btn-md btn-secondary btn-block" type="submit" disabled><i class="fa fa-cog"></i></button>
-                            </div>
-                        <div class="node-toggle-button">
-                            <button class="btn btn-md btn-info btn-block" type="submit">Enable Node</button>
-                            <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit">Disable</button> -->
-                        </div>
-                    </div>
-                    
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 node-content">
-                    <div class="node-data">
-                        <span class="content">
-                            <pre><code>&nbsp;&nbsp; 1 . 2 . 3 . 4 . 5 . 6 . 7</code></pre>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-
-            <div class="row node">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 node-content">
-                    <div class="node-info">
-                        <div class="node-name">
-                            <span class="node-stat">
-                                <i title="Node currently disconned" class="fa fa-times"></i>
-                            </span>
-                            TEHRAN-NODE
-                        </div>
-                        <div class="node-ip">
-                            192.168.0.2
-                        </div>
-                    </div>
-                    <div class="node-buttons">
-                            <div class="node-setting-button">
-                                    <button class="btn btn-md btn-secondary btn-block" type="submit" disabled><i class="fa fa-cog"></i></button>
-                            </div>
-                        <div class="node-toggle-button">
-                            <button class="btn btn-md btn-secondary btn-block" type="submit" disabled>Disable Node</button>
-                            <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit">Disable</button> -->
-
-                        </div>
-                        
-                    </div>
-                
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 node-content">
-                    <div class="node-data">
-                        <span class="content">
-                            <pre><code>&nbsp;&nbsp; 1 . 2 . 3 . 4 . 5 . 6 . 7</code></pre>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-
-            <div class="row node">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6 node-content">
-                        <div class="node-info">
-                            <div class="node-name">
-                                <span class="node-stat">
-                                    <i title="Node currently connected" class="fa fa-check"></i>
-                                </span>
-                                AMSETERDAM-NODE
-                            </div>
-                            <div class="node-ip">
-                                192.168.0.3
-                            </div>
-                        </div>
-                        <div class="node-buttons">
-                                <div class="node-setting-button">
-                                        <button class="btn btn-md btn-secondary btn-block" type="submit" disabled><i class="fa fa-cog"></i></button>
-                                </div>
-                            <div class="node-toggle-button">
-                                <button class="btn btn-md btn-secondary btn-block" type="submit" disabled>Disable Node</button>
-                                <!-- <button class="btn btn-sm btn-secondary btn-block" type="submit">Disable</button> -->
-    
-                            </div>
-                            
-                        </div>
-                    
-                    </div>
-                    <div class="col-md-3"></div>
-                </div>
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 node-content">
-                    <div class="node-data">
-                        <span class="content">
-                            <pre><code>&nbsp;&nbsp; 1 . 2 . 3 . 4 . 5 . 6 . 7</code></pre>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-
-            
+        <div class="container nodes" id="nodes">
+            <!-- this will be filled autoamtically -->
         </div>
+
+
+        <script>
+            $("#refresh_button").click(function(){
+                var text = $(this).val();
+            
+                $.ajax({
+                  url: "/nodes",
+                  type: "get",
+                  success: function(response) {
+                    $("#nodes").html(response);
+                  },
+                  error: function(xhr) {
+                    //Do Something to handle error
+                  }
+                });
+            });
+            </script>
   </body>
 </html>

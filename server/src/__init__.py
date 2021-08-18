@@ -2,10 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from dotenv import load_dotenv
+
 import paho.mqtt.client as mqtt
 import os
 
-from .mqtt import on_connect, on_message
+from .mqtthandler import on_connect, on_message
 
 load_dotenv()
 
@@ -19,14 +20,16 @@ def create_app():
 
     db.init_app(app)
 
-    client = mqtt.Client(client_id="hossein_iot")
+    client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
     client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
     client.username_pw_set(os.getenv('MQTT_USER'), os.getenv('MQTT_PASS'))
-    client.connect(os.getenv('MQTT_URL'), os.getenv('MQTT_PORT'))    
-    client.loop_forever()
-
+    client.connect(os.getenv('MQTT_URL'), int(os.getenv('MQTT_PORT')))
+    # client.loop_forever()
+    client.loop_start()
+    
+    
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
