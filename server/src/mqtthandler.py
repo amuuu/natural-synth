@@ -54,13 +54,13 @@ names = []
 divs = []
 
 # changing the name of a node and inform that node.
-def peripheral_node_name_update(device, new_name):
-    client_object.publish(topic[1], json.dumps({'cmd':'change_name', 'device_name': device, 'new_name': new_name}), 0)
+def peripheral_node_name_update(device_name, new_name):
+    client_object.publish(topic[1], json.dumps({'cmd':'change_name', 'device_name': device_name, 'new_name': new_name}), 0)
 
 
 # changing the status of a node. after a node recieves the command to deactivate, it stops sending data until it recieves activation again                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-def peripheral_node_activeself_update(device, activeself): # ip or name
-    client_object.publish(topic[1], json.dumps({'cmd':'change_active_self','device_name': device, 'activeself': activeself}), 0)
+def peripheral_node_activeself_update(device_name, activeself): # ip or name
+    client_object.publish(topic[1], json.dumps({'cmd':'change_active_self','device_name': device_name, 'activeself': activeself}), 0)
 
 def on_connect(client, userdata, flags, rc):
     global client_object

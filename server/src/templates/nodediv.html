@@ -21,14 +21,42 @@
             </div>
             <div class="node-buttons">
                     <div class="node-setting-button">
-                            <button class="btn btn-md btn-secondary btn-block" type="submit" disabled><i class="fa fa-cog"></i></button>
+                        {% if node.is_active %}
+                        <button class="btn btn-md btn-secondary btn-block" type="submit" data-toggle="modal" data-target="#modal_{{ node.name }}" ><i class="fa fa-cog"></i></button>
+                        {% endif %}
+                        {% if not node.is_active %}
+                        <button class="btn btn-md btn-secondary btn-block" type="submit" disabled><i class="fa fa-cog"></i></button>
+                        {% endif %}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal_{{ node.name }}" tabindex="-1" role="dialog" aria-labelledby="modal_{{ node.name }}_label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="modal_{{ node.name }}_label">Change Node Settings</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="name_change_form" id="{{ node.name }}">
+                                            <div class="form-group">
+                                            <label for="new_name_field">New name</label>
+                                            <input class="form-control" class="new_name_input" id="new_name_input" placeholder="Enter node's new name">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary"">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 <div class="node-toggle-button">
                     {% if node.is_active %}
-                    <button class="btn btn-md btn-danger btn-block" name="{{ node.name }}" type="submit" id="change_activeself_false">Disable Node</button>
+                    <button class="btn btn-md btn-danger btn-block change_activeself_false" name="{{ node.name }}" type="submit" id="change_activeself_false">Disable</button>
                     {% endif %}
                     {% if not node.is_active %}
-                    <button class="btn btn-md btn-success btn-block" name="{{ node.name }}" type="submit" id="change_activeself_true">Enable Node</button>
+                    <button class="btn btn-md btn-success btn-block change_activeself_true" name="{{ node.name }}" type="submit" id="change_activeself_true">Enable</button>
                     {% endif %}
                 </div>
                 
@@ -52,11 +80,32 @@
 {% endfor %}
 
 <script>
-    $("#change_activeself_true").click(function(){
-        var text = $(this).val();
+    $(".change_activeself_true").click(function(){
+
         var data = { 
-            name: $(this).attr("name"),
+            device_name: $(this).attr("name"),
             activeself: "true"
+        }
+       
+        $.ajax({
+            url: "/changeactiveself",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ Data: data }),
+            success: function(response) {
+            
+            },
+            error: function(xhr) {
+            }
+        });
+    });
+
+    $(".change_activeself_false").click(function(){
+
+        var data = { 
+            device_name: $(this).attr("name"),
+            activeself: "false"
         }
         
         $.ajax({
@@ -73,24 +122,29 @@
         });
     });
 
-    $("#change_activeself_false").click(function(){
-        var text = $(this).val();
+    $(".name_change_form").on('submit', function(e) {
+        e.preventDefault();
+
+        var id = $(this).attr('id');
+
         var data = { 
-            name: $(this).attr("name"),
-            activeself: "false"
+            device_name: id,
+            new_name: $(this).find('input').first().val()
         }
-       
+        
         $.ajax({
-            url: "/changeactiveself",
+            url: "/changename",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify({ Data: data }),
             success: function(response) {
-            
             },
             error: function(xhr) {
             }
         });
+        
+        var name = '#modal_'+ id
+        $(name).modal('toggle');
     });
 </script>
