@@ -16,7 +16,7 @@
                     {{ node.name }}
                 </div>
                 <div class="node-ip">
-                    {{ node.sensor_type }}
+                    Sensor Type: {{ node.sensor_type }}
                 </div>
             </div>
             <div class="node-buttons">
@@ -25,10 +25,10 @@
                     </div>
                 <div class="node-toggle-button">
                     {% if node.is_active %}
-                    <button class="btn btn-md btn-danger btn-block" type="submit">Disable Node</button>
+                    <button class="btn btn-md btn-danger btn-block" name="{{ node.name }}" type="submit" id="change_activeself_false">Disable Node</button>
                     {% endif %}
                     {% if not node.is_active %}
-                    <button class="btn btn-md btn-success btn-block" type="submit">Enable Node</button>
+                    <button class="btn btn-md btn-success btn-block" name="{{ node.name }}" type="submit" id="change_activeself_true">Enable Node</button>
                     {% endif %}
                 </div>
                 
@@ -48,5 +48,49 @@
         </div>
         <div class="col-md-3"></div>
     </div>
-
+    
 {% endfor %}
+
+<script>
+    $("#change_activeself_true").click(function(){
+        var text = $(this).val();
+        var data = { 
+            name: $(this).attr("name"),
+            activeself: "true"
+        }
+        
+        $.ajax({
+            url: "/changeactiveself",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ Data: data }),
+            success: function(response) {
+            
+            },
+            error: function(xhr) {
+            }
+        });
+    });
+
+    $("#change_activeself_false").click(function(){
+        var text = $(this).val();
+        var data = { 
+            name: $(this).attr("name"),
+            activeself: "false"
+        }
+       
+        $.ajax({
+            url: "/changeactiveself",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ Data: data }),
+            success: function(response) {
+            
+            },
+            error: function(xhr) {
+            }
+        });
+    });
+</script>

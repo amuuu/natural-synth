@@ -28,7 +28,7 @@
             <a class="header-logout" href="{{ url_for('auth.logout') }}">/ Logout ({{ email }})</a>
         </div>
         <br>
-        <button id="refresh_button">Refresh</button>
+        <button type="button" class="btn btn-secondary" id="refresh_button">Refresh Nodes List</button>
         
         <div class="container nodes" id="nodes">
             <!-- this will be filled autoamtically -->
@@ -46,10 +46,10 @@
                     $("#nodes").html(response);
                   },
                   error: function(xhr) {
-                    //Do Something to handle error
                   }
                 });
             });
-            </script>
+        </script>
+        
   </body>
 </html>
