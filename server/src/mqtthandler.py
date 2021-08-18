@@ -94,6 +94,7 @@ def on_message(client, userdata, msg):
             if name not in names:
                 
                 old_name = data.get('old_name')
+                
                 if old_name == "-":
                     print("Node \"" + name + "\" didn't exist before. Added to list now.")
                     names.extend(name)
