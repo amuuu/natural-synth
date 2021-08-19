@@ -12,13 +12,13 @@ import paho.mqtt.client as mqtt
 JSON FORMAT:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-topic arduino_send:
+topic ns/arduino_send:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 1) value_share command:
     {
     "cmd":"value_share",
-    "device_name": sth,
-    "val": sth,
+    "device_name": "sth",
+    "val": 12341.23
     }
 
 2) node_introduction command:
@@ -31,20 +31,20 @@ topic arduino_send:
     }
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-topic arduino_change:
+topic ns/arduino_change:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 3) change_active_self command:
     {
-    "cmd": "change_active_self"
-    "device_name": sth,
-    "activeself": sth
+    "cmd": "change_active_self",
+    "device_name": "sth",
+    "activeself": "sth"
     }
 
 4) change_name command:
     {
     "cmd": "change_name",
-    "device_name": device,
-    "new_name": new_name
+    "device_name": "device",
+    "new_name": "new_name"
     }
 """
 

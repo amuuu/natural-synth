@@ -5,3 +5,7 @@ Choose the Arduino boilerplate code from this directory. The most basic one whic
 The only thing that you might need to change in that file is the `SENSOR_INPUT_PIN` constant at the top of the file.
 
 After modifying the code, upload it on your Arduino!
+
+## How to setup and use
+1) Choose Wemos D1 as your board in Arduino IDE
+2) Install PubSubClient library in Arduino IDE
