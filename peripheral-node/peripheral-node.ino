@@ -96,7 +96,7 @@ void loop()
 void startup()
 {
   // Initialize the device
-  pinMode(BUILTIN_LED, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(115200);
 
   // connect to the internet and the server
@@ -167,12 +167,13 @@ void setup_wifi()
 
 void callback(char* topic, byte* payload, unsigned int length)
 {
-  decode_cmd(payload);
+  
+  decode_cmd(castPayload(payload, length), length);
 
   if (topic == topics[1]) {
-    digitalWrite(BUILTIN_LED, LOW);
+    digitalWrite(LED_BUILTIN, LOW);
   } else if (topic == topics[0]) {
-    digitalWrite(BUILTIN_LED, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
   }
 
 }
@@ -213,7 +214,7 @@ void reconnect()
 const char* make_cmd__value_share(float value)
 {
 
-  const char* res;
+  String res;
   StaticJsonDocument<96> doc;
   doc["cmd"] = commands[0][0];
   doc["device_name"] = DEVICE_NAME;
@@ -221,13 +222,13 @@ const char* make_cmd__value_share(float value)
   
   serializeJson(doc, res);
 
-  return res;
+  return res.c_str();
 }
 
 const char* make_cmd__node_introduction()
 {
 
-  const char* res;
+  String res;
   StaticJsonDocument<192> doc;
   
   doc["cmd"] = commands[0][1];
@@ -238,15 +239,15 @@ const char* make_cmd__node_introduction()
 
   serializeJson(doc, res);
   
-  return res;
+  return res.c_str();
 }
 
 
-void decode_cmd(char* payload)
+void decode_cmd(char* payload, int plength)
 {
   StaticJsonDocument<48> doc;
   
-  DeserializationError error = deserializeJson(doc, input, inputLength);
+  DeserializationError error = deserializeJson(doc, payload, plength);
   
   if (error) {
     Serial.print(F("deserializeJson() failed: "));
@@ -268,7 +269,7 @@ void decode_cmd(char* payload)
         (activeself=="false" && DEVICE_ACTIVESELF == true))
     {
       if(activeself=="true") DEVICE_ACTIVESELF = true;
-      else if (activeself=="false") DEVICE_ACTVIESELF = false;      
+      else if (activeself=="false") DEVICE_ACTIVESELF = false;      
       DEVICE_ACTIVESELF_STR = activeself;
 
       deviceActiveselfChanged = true;
@@ -284,4 +285,16 @@ void decode_cmd(char* payload)
     
     deviceNameChanged = true;
   }
+}
+
+char* castPayload(byte* payload, int plength)
+{
+  char* res = new char[plength];
+  
+  for (int i = 0; i < plength; i++)
+  {
+    res[i] = (char) payload[i];
+  }
+  
+  return res;
 }
