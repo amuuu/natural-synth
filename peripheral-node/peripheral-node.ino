@@ -128,15 +128,16 @@ void handleSetupState()
 
     deviceActiveselfChanged = false;
   }
-  else if (deviceMustIntroduce)
-  {
-    deviceMustIntroduce = false;
-  }
   else
   {
     state = SENDING;
   }
 
+  if (deviceMustIntroduce)
+  {
+    deviceMustIntroduce = false;
+  }
+  
   // send the node_introduction command to ns/arduino_send
   String command = make_cmd__node_introduction();
   client.publish(topics[0], command.c_str());
