@@ -94,7 +94,7 @@
             dataType: "json",
             data: JSON.stringify({ Data: data }),
             success: function(response) {
-            
+                $("#refresh_button").trigger("click");
             },
             error: function(xhr) {
             }
@@ -115,7 +115,7 @@
             dataType: "json",
             data: JSON.stringify({ Data: data }),
             success: function(response) {
-            
+                $("#refresh_button").trigger("click");
             },
             error: function(xhr) {
             }
@@ -139,6 +139,7 @@
             dataType: "json",
             data: JSON.stringify({ Data: data }),
             success: function(response) {
+                $("#refresh_button").trigger("click");
             },
             error: function(xhr) {
             }

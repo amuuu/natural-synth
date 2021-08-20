@@ -43,3 +43,11 @@ def change_activeself():
 
     return Response("Activeself changed successfully.", status=200)
 
+
+@main.route('/introductionrequest', methods=['GET'])
+def introduction_request():
+    try:
+        mqtthandler.introduction_request()
+        return Response("Sent introduction request successfully.", status=200)
+    except:
+        return Response("Error in sending introduction request.", status=400)

@@ -28,7 +28,8 @@
             <a class="header-logout" href="{{ url_for('auth.logout') }}">/ Logout ({{ email }})</a>
         </div>
         <br>
-        <button type="button" class="btn btn-secondary" id="refresh_button">Refresh Nodes List</button>
+        <button type="button" class="btn btn-secondary" id="refresh_button">Refresh Nodes List</button> &nbsp;&nbsp;
+        <button type="button" class="btn btn-secondary" id="introduction_request">Introduction Request</button>
         
         <div class="container nodes" id="nodes">
             <!-- this will be filled autoamtically -->
@@ -43,7 +44,23 @@
                   url: "/nodes",
                   type: "get",
                   success: function(response) {
+                    $("#nodes").empty();
                     $("#nodes").html(response);
+                  },
+                  error: function(xhr) {
+                  }
+                });
+            });
+
+            $("#introduction_request").click(function(){
+                var text = $(this).val();
+            
+                $.ajax({
+                  url: "/introductionrequest",
+                  type: "get",
+                  success: function(response) {
+                    $("#refresh_button").trigger("click");
+
                   },
                   error: function(xhr) {
                   }

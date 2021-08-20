@@ -46,6 +46,11 @@ topic ns/arduino_change:
     "device_name": "device",
     "new_name": "new_name"
     }
+
+5) introduction_request command:
+    {
+    "cmd": "introduction_request"
+    }
 """
 
 topic = ['ns/arduino_send',
@@ -63,6 +68,9 @@ def peripheral_node_name_update(device_name, new_name):
 def peripheral_node_activeself_update(device_name, activeself): # ip or name
     client_object.publish(topic[1], json.dumps({'cmd':'change_active_self','device_name': device_name, 'activeself': activeself}), 0)
 
+def introduction_request():
+    client_object.publish(topic[1], json.dumps({'cmd':'introduction_request'}), 0)
+
 def on_connect(client, userdata, flags, rc):
     global client_object
     client_object = client
@@ -74,9 +82,9 @@ def on_connect(client, userdata, flags, rc):
     print("Subscribed to " + str(count_topics) + " topics successfully...")
 
 def on_message(client, userdata, msg):
-    
+    # try:
     data = json.loads(msg.payload.decode())
-    
+
     if msg.topic == topic[0]:
     
         cmd = data.get('cmd')
@@ -87,9 +95,9 @@ def on_message(client, userdata, msg):
             sensor_type = data.get('sensor_type')
             is_active = data.get('is_active')
             if is_active=="true":
-                is_active = True
+                is_active_bool = True
             elif is_active == "false":
-                is_active = False
+                is_active_bool = False
             
             # there is a new name we haven't seen before. it's either a new device or a device we know but with a new name
             if name not in names:
@@ -98,24 +106,28 @@ def on_message(client, userdata, msg):
                 
                 if old_name == "-":
                     print("Node \"" + name + "\" didn't exist before. Added to list now.")
-                    names.extend(name)
-                    divs.append({"name": name, "sensor_type": sensor_type, "is_active": is_active})
+                    names.append(name)
+                    divs.append({"name": name, "sensor_type": sensor_type, "is_active": is_active_bool})
 
                 else:
                     for div in divs:
                         if div['name'] == old_name:
                             div['name'] = name
 
+            
             ## the name is known. And hasn't changed. So the only reason that this cmd must've been sent is the fact that active self has changed
             else:
                 for div in divs:
-                    if div['name'] == name:
-                        div['is_active'] = data.get('is_active')
+                    if div['name'] == name and div['is_active'] != is_active_bool:
+                        div['is_active'] = is_active_bool
+                        print("Node \"" + name + "'s activity just toggled.")
                     
         
         if cmd == "value_share":
             
             val = data.get('val')
 
-            # show in the div
-            # it can be done easily with ajax but doesn't it must be with socket to work properly and seamlessly
+                # show in the div
+                # it can be done easily with ajax but doesn't it must be with socket to work properly and seamlessly
+    # except:
+    #     print("Message parse error...")
