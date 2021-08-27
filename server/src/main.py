@@ -44,10 +44,18 @@ def change_activeself():
     return Response("Activeself changed successfully.", status=200)
 
 
-@main.route('/introductionrequest', methods=['GET'])
-def introduction_request():
+@main.route('/peripheral_introductionrequest', methods=['GET'])
+def peripheral_introduction_request():
     try:
         mqtthandler.introduction_request()
-        return Response("Sent introduction request successfully.", status=200)
+        return Response("Sent peripherals introduction request successfully.", status=200)
     except:
-        return Response("Error in sending introduction request.", status=400)
+        return Response("Error in sending peripherals introduction request.", status=400)
+
+@main.route('/raspberry_introductionrequest', methods=['GET'])
+def raspberry_introduction_request():
+    try:
+        mqtthandler.processing_node_introduction_request()
+        return Response("Sent raspberry introduction request successfully.", status=200)
+    except:
+        return Response("Error in sending raspberry introduction request.", status=400)

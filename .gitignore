@@ -1,5 +1,8 @@
 server/src/__pycache__/
 server/venv/
-
 server/src/.env
 server/src/db.sqlite
+
+raspberry-node/src/__pycache__/
+raspberry-node/venv/
+raspberry-node/src/.env
