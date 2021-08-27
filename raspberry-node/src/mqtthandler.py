@@ -10,7 +10,7 @@ topic = ['ns/arduino_send',
          'ns/raspberry_change']
 
 
-def introduction_request_send():
+def introduction_response_send():
     client_object.publish(topic[1], json.dumps
     ({
         'cmd':'raspberry_introduction', 
@@ -75,7 +75,7 @@ def on_message(client, userdata, msg):
 
         #### INTRODUCTION REQUEST
         if cmd == "introduction_request":
-            introduction_request_send()
+            introduction_response_send()
             print("Introduction sent...")
 
         #### MUSIC THEORY COMMANDS 
@@ -157,5 +157,5 @@ def on_message(client, userdata, msg):
 
 
         if sth_was_modified:
-            introduction_request_send()
+            introduction_response_send()
             sth_was_modified = False
