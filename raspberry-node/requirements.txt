@@ -1,1 +1,4 @@
+flask
+paho-mqtt
+python-dotenv
 synthesizer

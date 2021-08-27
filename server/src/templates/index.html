@@ -28,133 +28,37 @@
             <a class="header-logout" href="{{ url_for('auth.logout') }}">/ Logout ({{ email }})</a>
         </div>
         <br>
-        <button type="button" class="btn btn-secondary" id="change_synth_settings" type="submit" data-toggle="modal" data-target="#modal_synth_settings">Change Synth Settings</button>&nbsp;&nbsp;
-        <button type="button" class="btn btn-secondary" id="raspberry_introduction_request">Raspberry Introduction Request</button><br><br>
+        <!-- <button type="button" class="btn btn-secondary" id="change_synth_settings" type="submit">Change Synth Settings</button>&nbsp;&nbsp; -->
+        <button type="button" class="btn btn-secondary" type="submit" data-toggle="modal" data-target="#modal_synth_settings">Change Synth Settings</button>&nbsp;&nbsp;
+        <!-- <button type="button" class="btn btn-secondary" id="raspberry_introduction_request">Raspberry Introduction Request</button><br><br> -->
         <button type="button" class="btn btn-secondary" id="refresh_button">Refresh Nodes List</button> &nbsp;&nbsp;
-        <button type="button" class="btn btn-secondary" id="peripheral_introduction_request">Nodes Introduction Request</button>
+        <!-- <button type="button" class="btn btn-secondary" id="peripheral_introduction_request">Nodes Introduction Request</button> -->
         
-        <div class="modal fade" id="modal_synth_settings" tabindex="-1" role="dialog" aria-labelledby="modal_synth_settings_label" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                  <h5 class="modal-title" id="modal_synth_settings_label">Change Synth Settings</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-                  </div>
-                  <div class="modal-body">
-                      <form id="synth_settings_form">
-                        <div class="form-group row">
-                          <label for="max_sensor_val" class="col-4 col-form-label">Max Sensor Value</label> 
-                          <div class="col-8">
-                            <input id="max_sensor_val" name="max_sensor_val" placeholder="Must be a number" type="text" class="form-control">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="min_sensor_val" class="col-4 col-form-label">Min Sensor Value</label> 
-                          <div class="col-8">
-                            <input id="min_sensor_val" name="min_sensor_val" placeholder="Must be a number" type="text" class="form-control">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="scale_base_note" class="col-4 col-form-label">Scale name</label> 
-                          <div class="col-8">
-                            <select id="scale_base_note" name="scale_base_note" class="custom-select">
-                              <option value="c">C</option>
-                              <option value="cs">C#</option>
-                              <option value="ds">D</option>
-                              <option value="e">E</option>
-                              <option value="f">F</option>
-                              <option value="fs">F#</option>
-                              <option value="g">G</option>
-                              <option value="gs">G#</option>
-                              <option value="a">A</option>
-                              <option value="as">A#</option>
-                              <option value="b">B</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="scale_type" class="col-4 col-form-label">Scale Type</label> 
-                          <div class="col-8">
-                            <select id="scale_type" name="scale_type" class="custom-select">
-                              <option value="minor">Harmonic Minor</option>
-                              <option value="major">Major</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="octave_start" class="col-4 col-form-label">Octave Start</label> 
-                          <div class="col-8">
-                            <input id="octave_start" name="octave_start" placeholder="Between 1-8" type="text" class="form-control">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="octave_nums" class="col-4 col-form-label">Number of Octaves</label> 
-                          <div class="col-8">
-                            <input id="octave_nums" name="octave_nums" placeholder="Between 1-8" type="text" class="form-control">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-4">Sound Out Active?</label> 
-                          <div class="col-8">
-                            <div class="custom-control custom-radio custom-control-inline">
-                              <input name="is_sound_out_active" id="is_sound_out_active_0" type="radio" class="custom-control-input" value="true"> 
-                              <label for="is_sound_out_active_0" class="custom-control-label">Yes</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                              <input name="is_sound_out_active" id="is_sound_out_active_1" type="radio" class="custom-control-input" value="false"> 
-                              <label for="is_sound_out_active_1" class="custom-control-label">No</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-4">MIDI Out Active?</label> 
-                          <div class="col-8">
-                            <div class="custom-control custom-radio custom-control-inline">
-                              <input name="is_midi_out_active" id="is_midi_out_active_0" type="radio" class="custom-control-input" value="true"> 
-                              <label for="is_midi_out_active_0" class="custom-control-label">Yes</label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                              <input name="is_midi_out_active" id="is_midi_out_active_1" type="radio" class="custom-control-input" value="false"> 
-                              <label for="is_midi_out_active_1" class="custom-control-label">No</label>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="sound_wave_type" class="col-4 col-form-label">Sound Wave Type</label> 
-                          <div class="col-8">
-                            <select id="sound_wave_type" name="sound_wave_type" class="custom-select">
-                              <option value="sine">Sine</option>
-                              <option value="triangle">Triangle</option>
-                              <option value="square">Square</option>
-                              <option value="saw">Saw</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="sound_duration" class="col-4 col-form-label">Sound Duration</label> 
-                          <div class="col-8">
-                            <input id="sound_duration" name="sound_duration" placeholder="Must be a number" type="text" class="form-control">
-                          </div>
-                        </div> 
-                        <div class="form-group row">
-                          <div class="offset-4 col-8">
-                            <button name="submit" type="submit" class="btn btn-primary">Change Settings</button>
-                          </div>
-                        </div>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
+        </div>
         
         <div class="container nodes" id="nodes">
             <!-- this will be filled autoamtically -->
         </div>
 
+        <div id="synth_settings_modal_content">
+            <!-- this will be filled autoamtically -->
+
+        </div>
 
         <script>
+            $(document).ready(function(){
+              $.ajax({
+                url: "/get_raspberry_info",
+                type: "get",
+                success: function(response) {
+                  $("#synth_settings_modal_content").empty();
+                  $("#synth_settings_modal_content").html(response);
+                },
+                error: function(xhr) {
+                }
+              });
+            });
+
             $("#refresh_button").click(function(){
                 var text = $(this).val();
             
@@ -170,32 +74,21 @@
                 });
             });
 
-            $("#peripheral_introduction_request").click(function(){
-                var text = $(this).val();
             
-                $.ajax({
-                  url: "/peripheral_introductionrequest",
-                  type: "get",
-                  success: function(response) {
-                    $("#refresh_button").trigger("click");
-
-                  },
-                  error: function(xhr) {
-                  }
-                });
-            });
-
-            $("#raspberry_introduction_request").click(function(){
+            $("#change_synth_settings").click(function(){
               var text = $(this).val();
             
-                $.ajax({
-                  url: "/peripheral_introductionrequest",
-                  type: "get",
-                  success: function(response) {
-                  },
-                  error: function(xhr) {
-                  }
-                });
+              $.ajax({
+                url: "/get_raspberry_info",
+                type: "get",
+                success: function(response) {
+                  $("#synth_settings_modal_content").empty();
+                  $("#synth_settings_modal_content").html(response);
+                },
+                error: function(xhr) {
+                }
+              });
+
             });
         </script>
         

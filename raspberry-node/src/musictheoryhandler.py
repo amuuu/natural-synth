@@ -1,4 +1,4 @@
-import variable_container
+from . import variable_container
 
 import random
 import math

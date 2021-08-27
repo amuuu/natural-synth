@@ -124,14 +124,14 @@ def peripheral_node_name_update(device_name, new_name):
 def peripheral_node_activeself_update(device_name, activeself):
     client_object.publish(topic[1], json.dumps({'cmd':'change_active_self','device_name': device_name, 'activeself': activeself}), 0)
 
-def introduction_request():
+def peripheral_introduction_request():
     client_object.publish(topic[1], json.dumps({'cmd':'introduction_request'}), 0)
 
 """
 COMMANDS FOR PROCESSING NODE
 """
 def processing_node_change_sensor_minmax(min, max):
-    client_object.publish(topic[2], json.dumps({'cmd':'change_sensor_minmax', 'min': min, 'new_name': max}), 0)
+    client_object.publish(topic[2], json.dumps({'cmd':'change_sensor_minmax', 'min': min, 'max': max}), 0)
 
 def processing_node_change_scale(scale_name, scale_type):
     client_object.publish(topic[2], json.dumps({'cmd':'change_scale', 'scale_name': scale_name, 'scale_type': scale_type}), 0)
@@ -152,7 +152,6 @@ def processing_node_introduction_request():
     client_object.publish(topic[2], json.dumps({'cmd':'introduction_request'}), 0)
 
 
-
 """
 MQTT CALLBACKS
 """
@@ -164,7 +163,14 @@ def on_connect(client, userdata, flags, rc):
     for i in topic:
         client.subscribe(i)
         count_topics += 1
+    
     print("Subscribed to " + str(count_topics) + " topics successfully...")
+
+    processing_node_introduction_request()
+    peripheral_introduction_request()
+
+    print ("Asked raspberry and peripheral nodes to introduce...")
+
 
 def on_message(client, userdata, msg):
     # try:
@@ -219,6 +225,8 @@ def on_message(client, userdata, msg):
     #     print("Message parse error...")
 
     if msg.topic == topic[2]:
+        
+        cmd = data.get('cmd')
 
         if cmd == "raspberry_introduction":
             raspberry_info_dict['max_sensor_val'] = data.get('max_sensor_val')
@@ -227,10 +235,19 @@ def on_message(client, userdata, msg):
             raspberry_info_dict['scale_base_note'] = data.get('scale_base_note')
             raspberry_info_dict['octave_start'] = data.get('octave_nums')
             raspberry_info_dict['octave_nums'] = data.get('octave_nums')
-            raspberry_info_dict['is_sound_out_active'] = data.get('is_sound_out_active')
-            raspberry_info_dict['is_midi_out_active'] = data.get('is_midi_out_active')
+            is_sound_out_active = data.get('is_sound_out_active')
+            if is_sound_out_active == "true":
+                raspberry_info_dict['is_sound_out_active'] = True
+            else:
+                raspberry_info_dict['is_sound_out_active'] = False
+            is_midi_out_active = data.get('is_midi_out_active')
+            if is_midi_out_active == "true":
+                raspberry_info_dict['is_midi_out_active'] = True
+            else:
+                raspberry_info_dict['is_midi_out_active'] = False
             raspberry_info_dict['sound_wave_type'] = data.get('sound_wave_type')
             raspberry_info_dict['sound_duration'] = data.get('sound_duration')
 
-            print("HERE BRO")
+            print("Recieved raspberry info...")
+            print(raspberry_info_dict)
 

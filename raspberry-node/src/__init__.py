@@ -8,14 +8,10 @@ from .mqtthandler import on_connect, on_message
 
 load_dotenv()
 
-import soundhandler, soundout_thread
-
-sound_out_thread = soundout_thread.SoundOutThread()
+from . import soundhandler, soundout_thread
 
 
 def create_app():
-    print("Here bro")
-
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -31,10 +27,9 @@ def create_app():
     
 
     soundhandler.init()
-    soundout_thread.start()
+    soundout_thread.SoundOutThread().start()
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
     
-
     return app

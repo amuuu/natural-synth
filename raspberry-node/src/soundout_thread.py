@@ -1,5 +1,6 @@
 import threading
-import soundhandler
+
+from . import soundhandler
 
 class SoundOutThread(threading.Thread):   
     def __init__(self):

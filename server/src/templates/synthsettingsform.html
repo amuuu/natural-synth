@@ -1,0 +1,253 @@
+<div class="modal fade" id="modal_synth_settings" tabindex="-1" role="dialog" aria-labelledby="modal_synth_settings_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modal_synth_settings_label">Change Synth Settings</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="synth_settings_form">
+                  <div class="form-group row">
+                    <label for="max_sensor_val" class="col-4 col-form-label">Max Sensor Value</label> 
+                    <div class="col-8">
+                      <input id="max_sensor_val" name="max_sensor_val" placeholder="Must be a number" type="text" class="form-control" value="{{ info['max_sensor_val'] }}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="min_sensor_val" class="col-4 col-form-label">Min Sensor Value</label> 
+                    <div class="col-8">
+                      <input id="min_sensor_val" name="min_sensor_val" placeholder="Must be a number" type="text" class="form-control" value="{{ info['min_sensor_val'] }}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="scale_base_note" class="col-4 col-form-label">Scale Name</label> 
+                    <div class="col-8">
+                      <select id="scale_base_note" name="scale_base_note" class="custom-select">
+                        {% if info['scale_base_note'] == 'c' %}
+                            <option value="c" selected>C</option>
+                        {% else %}
+                            <option value="c">C</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'cs' %}
+                            <option value="c#" selected>C#</option>
+                        {% else %}
+                            <option value="c#">C#</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'd' %}
+                            <option value="d" selected>D</option>
+                        {% else %}
+                            <option value="d">D</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'ds' %}
+                            <option value="d#" selected>D#</option>
+                        {% else %}
+                            <option value="d#">D#</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'e' %}
+                            <option value="e" selected>E</option>
+                        {% else %}
+                            <option value="e">E</option>
+                        {% endif %}
+                        
+                        {% if info['scale_base_note'] == 'f' %}
+                            <option value="f" selected>F</option>
+                        {% else %}
+                            <option value="f">F</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'fs' %}
+                            <option value="f#" selected>F#</option>
+                        {% else %}
+                            <option value="f#">F#</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'g' %}
+                            <option value="g" selected>G</option>
+                        {% else %}
+                            <option value="g">G</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'gs' %}
+                            <option value="g#" selected>G#</option>
+                        {% else %}
+                            <option value="g#">G#</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'a' %}
+                            <option value="a" selected>A</option>
+                        {% else %}
+                            <option value="a">A</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'as' %}
+                            <option value="a#" selected>A#</option>
+                        {% else %}
+                            <option value="a#">A#</option>
+                        {% endif %}
+
+                        {% if info['scale_base_note'] == 'b' %}
+                            <option value="b" selected>B</option>
+                        {% else %}
+                            <option value="b">B</option>
+                        {% endif %}
+
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="scale_type" class="col-4 col-form-label">Scale Type</label> 
+                    <div class="col-8">
+                      <select id="scale_type" name="scale_type" class="custom-select">
+                        {% if info['scale_type'] == 'minor' %}
+                            <option value="minor" selected>Harmonic Minor</option>
+                        {% else %}
+                            <option value="minor">Harmonic Minor</option>
+                        {% endif %}
+                        {% if info['scale_type'] == 'major' %}
+                            <option value="major" selected>Major</option>
+                        {% else %}
+                            <option value="major">Major</option>
+                        {% endif %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="octave_start" class="col-4 col-form-label">Octave Start</label> 
+                    <div class="col-8">
+                      <input id="octave_start" name="octave_start" placeholder="Between 1-8" type="text" class="form-control" value="{{ info['octave_start'] }}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="octave_nums" class="col-4 col-form-label">Number of Octaves</label> 
+                    <div class="col-8">
+                      <input id="octave_nums" name="octave_nums" placeholder="Between 1-8" type="text" class="form-control" value="{{ info['octave_nums'] }}">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-4">Sound Out Active?</label> 
+                    <div class="col-8">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        {% if info['is_sound_out_active'] %}
+                        <input name="is_sound_out_active" id="is_sound_out_active_0" type="radio" class="custom-control-input" value="true" checked> 
+                        {% else %}
+                        <input name="is_sound_out_active" id="is_sound_out_active_0" type="radio" class="custom-control-input" value="true"> 
+                        {% endif %}
+                        <label for="is_sound_out_active_0" class="custom-control-label">Yes</label>
+                      </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        {% if not info['is_sound_out_active'] %}
+                        <input name="is_sound_out_active" id="is_sound_out_active_1" type="radio" class="custom-control-input" value="false" checked> 
+                        {% else %}
+                        <input name="is_sound_out_active" id="is_sound_out_active_1" type="radio" class="custom-control-input" value="false"> 
+                        {% endif %}
+                        <label for="is_sound_out_active_1" class="custom-control-label">No</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-4">MIDI Out Active?</label> 
+                    <div class="col-8">
+                      <div class="custom-control custom-radio custom-control-inline">
+                        {% if info['is_midi_out_active'] %}
+                        <input name="is_midi_out_active" id="is_midi_out_active_0" type="radio" class="custom-control-input" value="true" checked>
+                        {% else %}
+                        <input name="is_midi_out_active" id="is_midi_out_active_0" type="radio" class="custom-control-input" value="true">
+                        {% endif %}
+                        <label for="is_midi_out_active_0" class="custom-control-label">Yes</label>
+                      </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        {% if not info['is_midi_out_active'] %}
+                        <input name="is_midi_out_active" id="is_midi_out_active_1" type="radio" class="custom-control-input" value="false" checked> 
+                        {% else %}
+                        <input name="is_midi_out_active" id="is_midi_out_active_1" type="radio" class="custom-control-input" value="false"> 
+                        {% endif %}
+                        <label for="is_midi_out_active_1" class="custom-control-label">No</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="sound_wave_type" class="col-4 col-form-label">Sound Wave Type</label> 
+                    <div class="col-8">
+                      <select id="sound_wave_type" name="sound_wave_type" class="custom-select">
+                        {% if info['sound_wave_type'] == 'sine' %}
+                        <option value="sine" selected>Sine</option>
+                        {% else %}
+                        <option value="sine">Sine</option>
+                        {% endif %}
+                        
+                        {% if info['sound_wave_type'] == 'triangle' %}
+                        <option value="triangle" selected>Triangle</option>
+                        {% else %}
+                        <option value="triangle">Triangle</option>
+                        {% endif %}
+
+                        {% if info['sound_wave_type'] == 'square' %}
+                        <option value="square" selected>Square</option>
+                        {% else %}
+                        <option value="square">Square</option>
+                        {% endif %}
+
+                        {% if info['sound_wave_type'] == 'saw' %}
+                        <option value="saw" selected>Saw</option>
+                        {% else %}
+                        <option value="saw">Saw</option>
+                        {% endif %}
+
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="sound_duration" class="col-4 col-form-label">Sound Duration</label> 
+                    <div class="col-8">
+                      <input id="sound_duration" name="sound_duration" placeholder="Must be a number" type="text" class="form-control" value="{{ info['sound_duration'] }}">
+                    </div>
+                  </div> 
+                  <button name="submit" id="change_submit" type="submit" class="btn btn-primary">Change Settings</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#synth_settings_form").on('submit', function(e)
+    {
+        e.preventDefault();
+        var data = 
+        {
+            max_sensor_val: $(this).find('#max_sensor_val').val(),
+            min_sensor_val: $(this).find('#min_sensor_val').val(),
+            scale_type: $(this).find('#scale_type').find(":selected").val(),
+            scale_base_note: $(this).find('#scale_base_note').find(":selected").val(),
+            octave_start: $(this).find('#octave_start').val(),
+            octave_nums: $(this).find('#octave_nums').val(),
+            is_sound_out_active: $(this).find('#is_sound_out_active').find(":checked").val(),
+            is_midi_out_active: $(this).find('#is_midi_out_active').find(":checked").val(),
+            sound_wave_type: $(this).find('#sound_wave_type').find(":selected").val(),
+            sound_duration: $(this).find('#sound_duration').val()
+        }
+
+        $.ajax({
+            url: "/changeraspbberysettings",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ Data: data }),
+            success: function(response) {
+
+            },
+            error: function(xhr) {
+            }
+        });
+
+        $("#modal_synth_settings").modal('toggle');
+
+    });
+
+</script>
