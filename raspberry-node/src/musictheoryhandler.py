@@ -1,3 +1,4 @@
+from os import close
 from . import variable_container
 
 import random
@@ -75,24 +76,22 @@ def _get_note_in_octave_range(note):
 
 def _quantize_note(note):
     
-    mod = note % _SCALE_NOTES_NUM
-    
+    mod = note % _OCTAVE_NOTES_NUM
     current_base_note = _notes.index(_scale_base_note_current)
     
-    closest_index, count = 0, 0
-    diff = 1000
     for n in _scale_notes_current:
         if (n + current_base_note) == mod:
             return mod
-        
-        else:
-            if math.floor(n + current_base_note - mod) < diff:
-                diff = math.floor(n + current_base_note - mod)
-                closest_index = count
+
+    closest_index, count, diff = 0, 0, 1000
+    for n in _scale_notes_current:
+        if math.floor(n + current_base_note - mod) < diff:
+            diff = math.floor(n + current_base_note - mod)
+            closest_index = count
         
         count+=1
-    
-    return _scale_notes_current[closest_index]
+
+    return _scale_notes_current[closest_index]+current_base_note
 
 def _process_raw_data(data):
     return data * _raw_data_shrink_factor + _raw_data_shrink_offset
@@ -126,9 +125,8 @@ def _get_random_note_index_in_scale():
     global _note_index_last
     
     note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
-    if note_index_new == _note_index_last:
-        if not variable_container.can_play_conescutive_repeating_notes:
-            while note_index_new == _note_index_last:
-                note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
+    while note_index_new == _note_index_last:
+        note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
     _note_index_last = note_index_new
-    return note_index_new
+    return _scale_notes_current[note_index_new]+_notes.index(_scale_base_note_current)
+

@@ -15,11 +15,11 @@ should_update_range = False
 ###############################
 
 scale_type = 'minor'
-scale_base_note = 'c'
+scale_base_note = 'g'
 should_change_scale = False
 
-octave_start = 2
-octave_nums = 3
+octave_start = 4
+octave_nums = 2
 should_change_octave = False
 
 is_chord_mode = False

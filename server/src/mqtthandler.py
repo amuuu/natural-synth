@@ -1,4 +1,4 @@
-import json
+import json, time
 import paho.mqtt.client as mqtt
 
 """
@@ -113,6 +113,8 @@ topic = ['ns/arduino_send',
 names = []
 divs = []
 raspberry_info_dict={}
+is_raspberry_introduced_for_first_time = False
+
 
 """
 COMMANDS FOR PERIPHERAL NODES
@@ -157,6 +159,8 @@ MQTT CALLBACKS
 """
 def on_connect(client, userdata, flags, rc):
     global client_object
+    global is_raspberry_introduced
+
     client_object = client
 
     count_topics=0
@@ -165,11 +169,14 @@ def on_connect(client, userdata, flags, rc):
         count_topics += 1
     
     print("Subscribed to " + str(count_topics) + " topics successfully...")
+    
+    peripheral_introduction_request()
+    print ("Asked peripheral nodes to introduce...")
 
     processing_node_introduction_request()
-    peripheral_introduction_request()
+    print ("Asked raspberry to introduce...")
 
-    print ("Asked raspberry and peripheral nodes to introduce...")
+
 
 
 def on_message(client, userdata, msg):
@@ -229,11 +236,15 @@ def on_message(client, userdata, msg):
         cmd = data.get('cmd')
 
         if cmd == "raspberry_introduction":
+            global is_raspberry_introduced_for_first_time
+            if not is_raspberry_introduced_for_first_time:
+                is_raspberry_introduced_for_first_time = True
+            
             raspberry_info_dict['max_sensor_val'] = data.get('max_sensor_val')
             raspberry_info_dict['min_sensor_val'] = data.get('min_sensor_val')
             raspberry_info_dict['scale_type'] = data.get('scale_type')
             raspberry_info_dict['scale_base_note'] = data.get('scale_base_note')
-            raspberry_info_dict['octave_start'] = data.get('octave_nums')
+            raspberry_info_dict['octave_start'] = data.get('octave_start')
             raspberry_info_dict['octave_nums'] = data.get('octave_nums')
             is_sound_out_active = data.get('is_sound_out_active')
             if is_sound_out_active == "true":

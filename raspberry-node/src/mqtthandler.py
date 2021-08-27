@@ -1,4 +1,4 @@
-import json
+import json,random
 import paho.mqtt.client as mqtt
 
 from . import variable_container
@@ -38,6 +38,9 @@ def on_connect(client, userdata, flags, rc):
         count_topics += 1
     
     print("Subscribed to " + str(count_topics) + " topics successfully... [raspberry]")
+    
+    introduction_response_send()
+    print("Introduced raspberry to server... [raspberry]")
 
 def on_message(client, userdata, msg):
     cmd = ''
@@ -56,7 +59,7 @@ def on_message(client, userdata, msg):
                 note_num = convert_data_to_note(val)
             
                 if variable_container.is_sound_out_active:
-                    add_to_soundbuffer(SoundObject(note_num,variable_container.sound_duration,1,variable_container.sound_wave_type))
+                    add_to_soundbuffer(note_num,variable_container.sound_duration,1,variable_container.sound_wave_type)
                 
                 if variable_container.is_midi_out_active:
                     pass

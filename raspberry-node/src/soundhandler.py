@@ -16,7 +16,8 @@ def play(note, duration, volume, waveform_type):
     #time.sleep(duration)
 
 def _note_to_frequency(note):
-    const = 1.059463
+    #check this function
+    const = 1.059463 # A above the middle C / A4=57(midi)
     base_freq = 440.0
     distance_to_basenote = note - 57
     res = base_freq * math.pow(const, distance_to_basenote)
@@ -28,11 +29,11 @@ def _init_waveform_name_to_obj_dict():
     _waveform_name_obj_dict['square'] = Waveform.square
     _waveform_name_obj_dict['saw'] = Waveform.sawtooth
 
-def add_to_soundbuffer(sound_object):
-    global _waveform_name_obj_dict
+def add_to_soundbuffer(note_num, duration, volume, waveform_type):
     global sound_buffer
-
-    sound_buffer.extend(sound_object)
+    
+    sound_object = SoundObject(note_num,duration,volume,waveform_type)
+    sound_buffer.append(sound_object)
 
 class SoundObject:
     def __init__(self, note_num, duration, volume, waveform_type):
