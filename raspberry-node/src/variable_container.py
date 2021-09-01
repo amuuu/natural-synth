@@ -45,3 +45,12 @@ is_midi_out_active = False
 
 sound_wave_type = 'sine'
 sound_duration = 0.5
+
+###############################
+#                             #
+#   MIDI HANDLER VARIABLES    #
+#                             #
+###############################
+
+midiout_port = 3 
+midiout_channel = 1

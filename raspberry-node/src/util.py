@@ -1,5 +1,5 @@
 
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 def print_tmp(msg_str_seg_list, msg_variable_seg_list):
     
@@ -19,7 +19,7 @@ def print_tmp(msg_str_seg_list, msg_variable_seg_list):
         except:
             var2 = ""
 
-        print("tmp__" + msg_str_seg_list[i] + " " + str(msg_variable_seg_list[i]) + " ")
+        print("tmp__" + var1 + " " + str(var2) + " ")
 
 
 def print_cmd_status_2(cmd_title, cmd_name, new_val_name_1, new_val_1, new_val_name_2, new_val_2):
@@ -30,3 +30,4 @@ def print_cmd_status_2(cmd_title, cmd_name, new_val_name_1, new_val_1, new_val_n
 def print_cmd_status_1(cmd_title, cmd_name, new_val_name, new_val):
     print("[" + cmd_title + "] " + cmd_name)
     print("... " + new_val_name + ": " + str(new_val))
+

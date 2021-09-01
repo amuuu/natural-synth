@@ -152,7 +152,15 @@ def on_message(client, userdata, msg):
         #### SOUND COMMANDS END
 
         #### MIDI COMMANDS 
+        if cmd == "change_midi_out_active":
+            isactive = data.get('isactive')
+            if isactive == "true":
+                variable_container.is_midi_out_active = True
+            else:
+                variable_container.is_midi_out_active = False
+            sth_was_modified = True
 
+            print_cmd_status_1("midi settings change", cmd, "is active", variable_container.is_midi_out_active)
         #### MIDI COMMANDS END
 
 

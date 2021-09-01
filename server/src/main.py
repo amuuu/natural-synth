@@ -107,9 +107,7 @@ def change_raspberrysettings():
             is_midi_out_active = False
         
         if mqtthandler.raspberry_info_dict['is_midi_out_active'] != is_midi_out_active:
-            # mqtthandler.processing_node_change_sound_out_active(is_midi_out_active_str)
-            pass
-
+             mqtthandler.processing_node_change_midi_out_active(is_midi_out_active_str)
         
         sound_wave_type = data.get('Data').get('sound_wave_type')
         if mqtthandler.raspberry_info_dict['sound_wave_type'] != sound_wave_type:

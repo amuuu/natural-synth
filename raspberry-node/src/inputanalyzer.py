@@ -1,6 +1,7 @@
 from . import variable_container
-from .musictheoryhandler import quantize_note, get_note_in_octave_range, shift_note_in_scale, _SCALE_NOTES_NUM, _OCTAVE_NOTES_NUM
+from .musictheoryhandler import quantize_note, _SCALE_NOTES_NUM
 from .soundhandler import add_to_soundbuffer
+from .midihandler import add_to_midibuffer
 from .util import print_tmp
 
 def init():
@@ -26,7 +27,7 @@ def anaylze_add_add_to_buffers(val):
         add_to_soundbuffer(note_num,variable_container.sound_duration,1,variable_container.sound_wave_type)
 
     if variable_container.is_midi_out_active:
-        pass
+        add_to_midibuffer(note_num)
 
     return note_num
 
@@ -41,10 +42,10 @@ def _update_data_shrink_range():
     
     if sensor_val_diff > notes_num:
         _raw_data_shrink_factor = 1 / alpha
-        _raw_data_shrink_offset = (_raw_data_shrink_factor * variable_container.min_sensor_val) * -1
+        _raw_data_shrink_offset = int((_raw_data_shrink_factor * variable_container.min_sensor_val) * -1)
     else:
         _raw_data_shrink_factor = alpha
-        _raw_data_shrink_offset = (_raw_data_shrink_factor * variable_container.min_sensor_val) * -1
+        _raw_data_shrink_offset = int((_raw_data_shrink_factor * variable_container.min_sensor_val) * -1)
 
     print_tmp(["sensor_val_diff"], [sensor_val_diff])
     print_tmp(["notes_num"], [notes_num])
@@ -53,7 +54,9 @@ def _update_data_shrink_range():
 
 def _convert_data_to_note(raw_data):
     
-    number = _process_raw_data(raw_data)
+    print_tmp(["raw data"], [raw_data])
+
+    number = int(_process_raw_data(raw_data))
     
     print_tmp(["processed raw data"], [number])
     
@@ -62,7 +65,9 @@ def _convert_data_to_note(raw_data):
 
     if not variable_container.is_chord_mode:
         note = quantize_note(number)
-        return get_note_in_octave_range(shift_note_in_scale(note))
+        print_tmp(["quantized note"], [note])
+
+        return note
 
 def _process_raw_data(data):
     if data < variable_container.min_sensor_val or data > variable_container.max_sensor_val:

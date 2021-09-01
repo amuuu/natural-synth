@@ -6,8 +6,10 @@ class SoundOutThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
+        print("[sound out thread] Initialized...")
 
     def run(self):
+        print("[sound out thread] Running...")
         while True:
             try:
                 if len(soundhandler.sound_buffer) != 0:

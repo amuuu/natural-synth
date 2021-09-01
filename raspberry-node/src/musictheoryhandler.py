@@ -1,5 +1,6 @@
 from os import close
 from . import variable_container
+from .util import print_tmp
 
 import random
 import math
@@ -37,7 +38,7 @@ def update_settings():
     if variable_container.should_change_chord_mode:
         pass
 
-def get_note_in_octave_range(note):
+def get_note_in_random_octave_in_range(note):
     _update_octave_range()
 
     target_octave = random.randint(_octave_start, _octave_end)
@@ -46,22 +47,11 @@ def get_note_in_octave_range(note):
 
 def quantize_note(note):
     
-    mod = note % _OCTAVE_NOTES_NUM
+    octave = int(note/_SCALE_NOTES_NUM)
+    mod = note % _SCALE_NOTES_NUM
     current_base_note = _notes.index(_scale_base_note_current)
-    
-    for n in _scale_notes_current:
-        if (n + current_base_note) == mod:
-            return mod
 
-    closest_index, count, diff = 0, 0, 1000
-    for n in _scale_notes_current:
-        if math.floor(n + current_base_note - mod) < diff:
-            diff = math.floor(n + current_base_note - mod)
-            closest_index = count
-        
-        count+=1
-
-    return _scale_notes_current[closest_index]+current_base_note
+    return (_scale_notes_current[mod] + current_base_note) + ((octave + variable_container.octave_start + 1) * _OCTAVE_NOTES_NUM)
 
 def shift_note_in_scale(note):
     return _notes.index(_scale_base_note_current) + note

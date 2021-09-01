@@ -144,6 +144,9 @@ def processing_node_change_octave_range(start_octave, octave_nums):
 def processing_node_change_sound_out_active(isactive):
     client_object.publish(topic[2], json.dumps({'cmd':'change_sound_out_active', 'isactive': isactive}), 0)
 
+def processing_node_change_midi_out_active(isactive):
+    client_object.publish(topic[2], json.dumps({'cmd':'change_midi_out_active', 'isactive': isactive}), 0)
+
 def processing_node_change_sound_wavetype(wave_type):
     client_object.publish(topic[2], json.dumps({'cmd':'change_sound_wavetype', 'wave_type': wave_type}), 0)
 

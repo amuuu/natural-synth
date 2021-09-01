@@ -8,7 +8,7 @@ from .mqtthandler import on_connect, on_message
 
 load_dotenv()
 
-from . import soundhandler, soundout_thread, inputanalyzer
+from . import soundhandler, soundout_thread, inputanalyzer, midihandler, midiout_thread
 
 
 def create_app():
@@ -27,8 +27,10 @@ def create_app():
     
 
     soundhandler.init()
+    midihandler.init()
     inputanalyzer.init()
     soundout_thread.SoundOutThread().start()
+    midiout_thread.MidiOutThread().start()
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
