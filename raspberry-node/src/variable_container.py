@@ -4,8 +4,8 @@
 #                             #
 ###############################
 
-max_sensor_val = 10
-min_sensor_val = 20
+max_sensor_val = 200
+min_sensor_val = 100
 should_update_range = False
 
 ###############################

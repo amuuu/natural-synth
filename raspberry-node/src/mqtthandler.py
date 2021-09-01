@@ -2,9 +2,9 @@ import json,random
 import paho.mqtt.client as mqtt
 
 from . import variable_container
-from .musictheoryhandler import update_settings, convert_data_to_note
-from .soundhandler import add_to_soundbuffer, SoundObject
-
+from .musictheoryhandler import update_settings
+from .inputanalyzer import anaylze_add_add_to_buffers, update_input_settings
+from .util import print_cmd_status_2, print_cmd_status_1
 
 topic = ['ns/arduino_send',
          'ns/raspberry_change']
@@ -56,22 +56,17 @@ def on_message(client, userdata, msg):
 
             try:
                 val = float(val)
-                note_num = convert_data_to_note(val)
-            
-                if variable_container.is_sound_out_active:
-                    add_to_soundbuffer(note_num,variable_container.sound_duration,1,variable_container.sound_wave_type)
                 
-                if variable_container.is_midi_out_active:
-                    pass
+                anaylze_add_add_to_buffers(val)
 
             except:
                 print("Error in parsing value: " + data.get('val') + " [raspberry]")
 
     if msg.topic == topic[1]:
         
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-        print(data)
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        # print("$$$$$$$$$$$$$$$$$ RAW DATA $$$$$$$$$$$$$$$$$$$$$")
+        # print(data)
+        # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 
         cmd = data.get('cmd')
         sth_was_modified = False
@@ -81,7 +76,7 @@ def on_message(client, userdata, msg):
             introduction_response_send()
             print("Introduction sent...")
 
-        #### MUSIC THEORY COMMANDS 
+        #### INPUT ANALYZER COMMANDS
 
         if cmd == "change_sensor_minmax":
             min = float(data.get('min'))
@@ -89,11 +84,14 @@ def on_message(client, userdata, msg):
             variable_container.min_sensor_val = min
             variable_container.max_sensor_val = max
             variable_container.should_update_range = True
-            update_settings()
+            update_input_settings()
             sth_was_modified = True
 
-            print("[music theory settings change] " + cmd)
-            print("... " + "min: " + str(variable_container.min_sensor_val) + " max: " + str(variable_container.max_sensor_val))
+            print_cmd_status_2("input analyzer settings change", cmd, "min", variable_container.min_sensor_val, "max", variable_container.max_sensor_val)
+
+        #### INPUT ANALYZER COMMANDS END
+        
+        #### MUSIC THEORY COMMANDS 
 
         if cmd == "change_scale":
             scale_name = data.get('scale_name')
@@ -103,9 +101,8 @@ def on_message(client, userdata, msg):
             variable_container.should_change_scale = True
             update_settings()
             sth_was_modified = True
-        
-            print("[music theory settings change] " + cmd)
-            print("... " + "name: " + str(variable_container.scale_base_note) + " type: " + str(variable_container.scale_type))
+
+            print_cmd_status_2("music theory settings change", cmd, "name", variable_container.scale_base_note, "type", variable_container.scale_type)
 
         if cmd == "change_octave_range":
             start_octave = int(data.get('start_octave'))
@@ -114,10 +111,10 @@ def on_message(client, userdata, msg):
             variable_container.octave_nums = octave_nums
             variable_container.should_change_octave = True
             update_settings()
+            update_input_settings()
             sth_was_modified = True
 
-            print("[music theory settings change] " + cmd)
-            print("... " + "start octave: " + str(variable_container.octave_start) + " nums: " + str(variable_container.octave_nums))
+            print_cmd_status_2("music theory settings change", cmd, "start octave", variable_container.octave_start, "nums", variable_container.octave_nums)
 
 
         #### MUSIC THEORY COMMANDS END
@@ -130,9 +127,9 @@ def on_message(client, userdata, msg):
             else:
                 variable_container.is_sound_out_active = False
             sth_was_modified = True
-            
-            print("[sound settings change] " + cmd)
-            print("... " + "is active: " + str(variable_container.is_sound_out_active))
+
+            print_cmd_status_1("sound settings change", cmd, "is active", variable_container.is_sound_out_active)
+
 
 
         if cmd == "change_sound_wavetype":
@@ -140,17 +137,17 @@ def on_message(client, userdata, msg):
             variable_container.sound_wave_type = type
             sth_was_modified = True
 
-            print("[sound settings change] " + cmd)
-            print("... " + "wave type: " + variable_container.sound_wave_type)
+            print_cmd_status_1("sound settings change", cmd, "wave type", variable_container.sound_wave_type)
+            
 
         
         if cmd == "change_sound_duration":
             duration = float(data.get('duration'))
             variable_container.sound_duration = duration
             sth_was_modified = True
-            
-            print("[sound settings change] " + cmd)
-            print("... " + "duration: " + str(variable_container.sound_duration))
+
+            print_cmd_status_1("sound settings change", cmd, "duration", variable_container.sound_duration)
+
 
         #### SOUND COMMANDS END
 

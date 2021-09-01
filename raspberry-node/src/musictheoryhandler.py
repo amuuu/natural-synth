@@ -23,14 +23,9 @@ _note_index_last = 2
 
 def init():
     _set_scale()
-    _update_data_shrink_range()
 
 def update_settings():
     
-    if variable_container.should_update_range:
-        _update_data_shrink_range()
-        variable_container.should_update_range = False
-
     if variable_container.should_change_scale:
         _set_scale()
         variable_container.should_change_scale = False
@@ -42,39 +37,14 @@ def update_settings():
     if variable_container.should_change_chord_mode:
         pass
 
-
-
-def convert_data_to_note(raw_data):
-    number = _process_raw_data(raw_data)
-
-    if not variable_container.is_chord_mode:
-        note = _quantize_note(number)
-        return _get_note_in_octave_range(_notes.index(_scale_base_note_current) + note)
-
-
-def _set_scale():
-    global _scale_notes_current
-    global _scale_type_current
-    global _scale_base_note_current
-
-    if variable_container.scale_type == 'major':
-        _scale_notes_current = _major_scale_notes
-        _scale_type_current = 'major'
-        _scale_base_note_current = variable_container.scale_base_note
-    
-    elif variable_container.scale_type == 'minor':
-        _scale_notes_current = _minor_harmonic_scale_notes
-        _scale_type_current = 'minor'
-        _scale_base_note_current = variable_container.scale_base_note
-
-def _get_note_in_octave_range(note):
+def get_note_in_octave_range(note):
     _update_octave_range()
 
     target_octave = random.randint(_octave_start, _octave_end)
     
     return note + target_octave * _OCTAVE_NOTES_NUM
 
-def _quantize_note(note):
+def quantize_note(note):
     
     mod = note % _OCTAVE_NOTES_NUM
     current_base_note = _notes.index(_scale_base_note_current)
@@ -93,35 +63,10 @@ def _quantize_note(note):
 
     return _scale_notes_current[closest_index]+current_base_note
 
-def _process_raw_data(data):
-    return data * _raw_data_shrink_factor + _raw_data_shrink_offset
+def shift_note_in_scale(note):
+    return _notes.index(_scale_base_note_current) + note
 
-def _update_data_shrink_range():
-    global _raw_data_shrink_factor
-    global _raw_data_shrink_offset
-
-    sensor_val_diff = variable_container.max_sensor_val - variable_container.min_sensor_val
-    notes_num = variable_container.octave_nums * _SCALE_NOTES_NUM
-    
-    alpha = sensor_val_diff / notes_num
-    
-    if sensor_val_diff > notes_num:
-        _raw_data_shrink_factor = 1 / alpha
-        _raw_data_shrink_offset = (alpha * variable_container.min_sensor_val - variable_container.octave_start * _OCTAVE_NOTES_NUM) * -1
-    else:
-        _raw_data_shrink_factor = alpha
-        _raw_data_shrink_offset = variable_container.min_sensor_val - alpha
-    
-def _update_octave_range():
-    global _octave_start
-    global _octave_end
-    global _octave_nums
-
-    _octave_start = variable_container.octave_start
-    _octave_end = variable_container.octave_start + variable_container.octave_nums - 1
-    _octave_nums = variable_container.octave_nums
-
-def _get_random_note_index_in_scale():
+def get_random_note_index_in_scale():
     global _note_index_last
     
     note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
@@ -130,3 +75,29 @@ def _get_random_note_index_in_scale():
     _note_index_last = note_index_new
     return _scale_notes_current[note_index_new]+_notes.index(_scale_base_note_current)
 
+def note_number_to_name(note):
+    return _notes[note%_OCTAVE_NOTES_NUM].upper()+str(int(note/_OCTAVE_NOTES_NUM - 1))
+
+def _set_scale():
+    global _scale_notes_current
+    global _scale_type_current
+    global _scale_base_note_current
+
+    if variable_container.scale_type == 'major':
+        _scale_notes_current = _major_scale_notes
+        _scale_type_current = 'major'
+        _scale_base_note_current = variable_container.scale_base_note
+    
+    elif variable_container.scale_type == 'minor':
+        _scale_notes_current = _minor_harmonic_scale_notes
+        _scale_type_current = 'minor'
+        _scale_base_note_current = variable_container.scale_base_note
+
+def _update_octave_range():
+    global _octave_start
+    global _octave_end
+    global _octave_nums
+
+    _octave_start = variable_container.octave_start
+    _octave_end = variable_container.octave_start + variable_container.octave_nums - 1
+    _octave_nums = variable_container.octave_nums
