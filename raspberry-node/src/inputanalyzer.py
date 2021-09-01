@@ -71,7 +71,7 @@ def _convert_data_to_note(raw_data):
 
 def _process_raw_data(data):
     if data < variable_container.min_sensor_val or data > variable_container.max_sensor_val:
-        print("Raw sensor value outside defined range... So it got ignored.")
+        print("[input analyzer] Raw sensor value outside defined range... So it got ignored.")
         return -1
 
     return data * _raw_data_shrink_factor + _raw_data_shrink_offset

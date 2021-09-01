@@ -37,10 +37,10 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(i)
         count_topics += 1
     
-    print("Subscribed to " + str(count_topics) + " topics successfully... [raspberry]")
+    print("[mqtt handler] Subscribed to " + str(count_topics) + " topics successfully...")
     
     introduction_response_send()
-    print("Introduced raspberry to server... [raspberry]")
+    print("[mqtt handler] Introduced raspberry to server...")
 
 def on_message(client, userdata, msg):
     cmd = ''
@@ -60,7 +60,7 @@ def on_message(client, userdata, msg):
                 anaylze_add_add_to_buffers(val)
 
             except:
-                print("Error in parsing value: " + data.get('val') + " [raspberry]")
+                print("[mqtt handler] Error in parsing value: " + data.get('val') + "...")
 
     if msg.topic == topic[1]:
         
@@ -74,7 +74,7 @@ def on_message(client, userdata, msg):
         #### INTRODUCTION REQUEST
         if cmd == "introduction_request":
             introduction_response_send()
-            print("Introduction sent...")
+            print("[mqtt handler] Introduction sent...")
 
         #### INPUT ANALYZER COMMANDS
 

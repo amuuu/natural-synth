@@ -1,5 +1,5 @@
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 def print_tmp(msg_str_seg_list, msg_variable_seg_list):
     

@@ -22,7 +22,7 @@ def init():
         try:
             midiout.open_port(midiout_port)
         except:
-            print("Not a valid MIDI port. Connected to a virtual port instead.")
+            print("[midi handler] Not a valid MIDI port. Connected to a virtual port instead.")
             midiout.open_virtual_port("Virtual Output")
     else:
         midiout.open_virtual_port("Virtual Output")

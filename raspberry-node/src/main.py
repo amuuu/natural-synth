@@ -10,7 +10,7 @@ is_debug_init_done__inputanalyzer = False
 
 @main.route('/')
 def flask_check():
-    print("Flask is running...")
+    print("[test api] Flask is running...")
     return "<h1>Flask is running...</h1>"
 
 
@@ -57,7 +57,7 @@ def debug__raw_val_to_note():
         is_debug_init_done__inputanalyzer = True
     
     val = request.args.get('val', default = 120, type = float)
-    print("Recieved val " + str(val) + "... Analyzing now...")
+    print("[test api] Recieved val " + str(val) + "...")
     processed_note_num = inputanalyzer.anaylze_add_add_to_buffers(val)
 
     if processed_note_num != -1:
