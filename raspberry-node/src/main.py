@@ -13,6 +13,7 @@ def flask_check():
     print("Flask is running...")
     return "<h1>Flask is running...</h1>"
 
+
 @main.route('/random')
 def debug__play_random_note():
     global is_debug_init_done__soundhandler
@@ -20,12 +21,10 @@ def debug__play_random_note():
         musictheoryhandler.init() 
         is_debug_init_done__soundhandler = True
 
-    random_index = musictheoryhandler.get_random_note_index_in_scale()
-    note = musictheoryhandler.quantize_note(random_index)
-    note_in_octave = musictheoryhandler.get_note_in_random_octave_in_range(musictheoryhandler._notes.index(musictheoryhandler._scale_base_note_current) + note)
-    soundhandler.add_to_soundbuffer(note_in_octave,variable_container.sound_duration,1,variable_container.sound_wave_type)
+    note = musictheoryhandler.for_test__get_random_note()
+    soundhandler.add_to_soundbuffer(note,variable_container.sound_duration,1,variable_container.sound_wave_type)
     
-    resp = "<h1>debug__random note</h1><br><br><h3>played the note number %s (%s)</h3>" % (note_in_octave, musictheoryhandler.note_number_to_name(note_in_octave))
+    resp = "<h1>debug__random note</h1><br><br><h3>played the note number %s (%s)</h3>" % (note, musictheoryhandler.note_number_to_name(note))
     return resp
 
 #/random_seq?length=10
@@ -39,10 +38,8 @@ def debug__play_random_note_seq():
     length = request.args.get('length', default = 1, type = int)
     print(musictheoryhandler._scale_notes_current)
     for i in range(length):
-        random_index = musictheoryhandler.get_random_note_index_in_scale()
-        note = musictheoryhandler.quantize_note(random_index)
-        note_in_octave = musictheoryhandler.get_note_in_random_octave_in_range(musictheoryhandler._notes.index(musictheoryhandler._scale_base_note_current) + note)
-        soundhandler.add_to_soundbuffer(note_in_octave,variable_container.sound_duration,1,variable_container.sound_wave_type)
+        note = musictheoryhandler.for_test__get_random_note()
+        soundhandler.add_to_soundbuffer(note,variable_container.sound_duration,1,variable_container.sound_wave_type)
     
     resp = "<h1>debug__random sequnce</h1>"
     return resp

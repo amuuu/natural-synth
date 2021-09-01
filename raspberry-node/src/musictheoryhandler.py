@@ -24,6 +24,8 @@ _note_index_last = 2
 
 def init():
     _set_scale()
+    _update_octave_range()
+
 
 def update_settings():
     
@@ -38,12 +40,6 @@ def update_settings():
     if variable_container.should_change_chord_mode:
         pass
 
-def get_note_in_random_octave_in_range(note):
-    _update_octave_range()
-
-    target_octave = random.randint(_octave_start, _octave_end)
-    
-    return note + target_octave * _OCTAVE_NOTES_NUM
 
 def quantize_note(note):
     
@@ -51,22 +47,14 @@ def quantize_note(note):
     mod = note % _SCALE_NOTES_NUM
     current_base_note = _notes.index(_scale_base_note_current)
 
-    return (_scale_notes_current[mod] + current_base_note) + ((octave + variable_container.octave_start + 1) * _OCTAVE_NOTES_NUM)
+    return (_scale_notes_current[mod] + current_base_note) + ((octave + variable_container.octave_start) * _OCTAVE_NOTES_NUM)
+
 
 def shift_note_in_scale(note):
     return _notes.index(_scale_base_note_current) + note
 
-def get_random_note_index_in_scale():
-    global _note_index_last
-    
-    note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
-    while note_index_new == _note_index_last:
-        note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
-    _note_index_last = note_index_new
-    return _scale_notes_current[note_index_new]+_notes.index(_scale_base_note_current)
-
 def note_number_to_name(note):
-    return _notes[note%_OCTAVE_NOTES_NUM].upper()+str(int(note/_OCTAVE_NOTES_NUM - 1))
+    return _notes[note%_OCTAVE_NOTES_NUM].upper()+str(int(note/_OCTAVE_NOTES_NUM))
 
 def _set_scale():
     global _scale_notes_current
@@ -89,5 +77,26 @@ def _update_octave_range():
     global _octave_nums
 
     _octave_start = variable_container.octave_start
-    _octave_end = variable_container.octave_start + variable_container.octave_nums - 1
+    _octave_end = variable_container.octave_start + variable_container.octave_nums
     _octave_nums = variable_container.octave_nums
+
+
+### for testing
+
+def for_test__get_note_in_random_octave_in_range():
+    target_octave = random.randint(_octave_start, _octave_end)
+    return target_octave
+
+def for_test__get_random_note_of_scale():
+    global _note_index_last
+    
+    note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
+    while note_index_new == _note_index_last:
+        note_index_new = random.randint(0,_SCALE_NOTES_NUM-1)
+    _note_index_last = note_index_new
+    return _scale_notes_current[note_index_new]+_notes.index(_scale_base_note_current)
+
+def for_test__get_random_note():
+    random_index = for_test__get_random_note_of_scale()
+    note = quantize_note(random_index)
+    return note
