@@ -54,7 +54,7 @@ def shift_note_in_scale(note):
     return _notes.index(_scale_base_note_current) + note
 
 def note_number_to_name(note):
-    return _notes[note%_OCTAVE_NOTES_NUM].upper()+str(int(note/_OCTAVE_NOTES_NUM))
+    return _notes[note%_OCTAVE_NOTES_NUM].upper()+str(int(note/_OCTAVE_NOTES_NUM - 1))
 
 def _set_scale():
     global _scale_notes_current
