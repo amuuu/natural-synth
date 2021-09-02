@@ -16,4 +16,5 @@ The dashboard is provided to the user to do these things:
 # How to build Natural for yourself?
 
 To build: Look at the [building guide](/funktional-stdo/natural-synth/wiki/Building-Guide) in wiki.
+
 To Run: Look at the [running guide](/funktional-stdo/natural-synth/wiki/Running-Guide) in wiki.
