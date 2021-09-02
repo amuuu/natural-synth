@@ -8,7 +8,7 @@ from .mqtthandler import on_connect, on_message
 
 load_dotenv()
 
-from . import soundhandler, soundout_thread, inputanalyzer, midihandler, midiout_thread
+from . import soundhandler, soundout_thread, inputanalyzer, midihandler, midiout_thread, musictheoryhandler
 
 
 def create_app():
@@ -25,7 +25,7 @@ def create_app():
     # client.loop_forever()
     client.loop_start()
     
-
+    musictheoryhandler.init()
     soundhandler.init()
     midihandler.init()
     inputanalyzer.init()

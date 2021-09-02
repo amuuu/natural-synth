@@ -42,7 +42,9 @@ def update_settings():
 
 
 def quantize_note(note):
-    
+    global _scale_notes_current
+    global _scale_base_note_current
+
     octave = int(note/_SCALE_NOTES_NUM)
     mod = note % _SCALE_NOTES_NUM
     current_base_note = _notes.index(_scale_base_note_current)

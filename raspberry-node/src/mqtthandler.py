@@ -54,13 +54,13 @@ def on_message(client, userdata, msg):
         if cmd == "value_share":
             val = data.get('val')
 
-            try:
-                val = float(val)
+            # try:
+            float_val = float(val)
                 
-                anaylze_add_add_to_buffers(val)
+            anaylze_add_add_to_buffers(float_val)
 
-            except:
-                print("[mqtt handler] Error in parsing value: " + data.get('val') + "...")
+            # except:
+            #     print("[mqtt handler] Error in parsing value: " + str(data.get('val')) + "...")
 
     if msg.topic == topic[1]:
         

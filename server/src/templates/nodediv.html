@@ -40,9 +40,38 @@
                                     </div>
                                     <div class="modal-body">
                                         <form class="name_change_form" id="{{ node.name }}">
-                                            <div class="form-group">
-                                            <label for="new_name_field">New name</label>
-                                            <input class="form-control" class="new_name_input" id="new_name_input" placeholder="Enter node's new name">
+                                            <div class="form-group row">
+                                                <label for="new_name_field" class="col-4 col-form-label">New Name</label>
+                                                <div class="col-8">
+                                                    <input class="form-control" name="name_{{ node.name }}" class="new_name_input form-control" id="new_name_field" type="text" placeholder="Enter node's new name" value="{{ node.name }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="new_send_interval_field" class="col-4 col-form-label">New Send Interval</label>
+                                                <div class="col-8">
+                                                    <input class="form-control" name="send_interval_{{ node.name }}" class="new_send_interval_input form-control" id="new_send_interval_field" type="text" placeholder="Enter node's new send interval" value="{{ node.send_interval }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-4">Test Mode Active?</label> 
+                                                <div class="col-8">
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        {% if node.is_test_mode_active %}
+                                                        <input name="is_test_mode_active_{{ node.name }}" id="is_test_mode_active_0_{{ node.name }}" type="radio" class="custom-control-input" value="true" checked> 
+                                                        {% else %}
+                                                        <input name="is_test_mode_active_{{ node.name }}" id="is_test_mode_active_0_{{ node.name }}" type="radio" class="custom-control-input" value="true"> 
+                                                        {% endif %}
+                                                        <label for="is_test_mode_active_0_{{ node.name }}" class="custom-control-label">Yes</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        {% if not node.is_test_mode_active %}
+                                                        <input name="is_test_mode_active_{{ node.name }}" id="is_test_mode_active_1_{{ node.name }}" type="radio" class="custom-control-input" value="false" checked> 
+                                                        {% else %}
+                                                        <input name="is_test_mode_active_{{ node.name }}" id="is_test_mode_active_1_{{ node.name }}" type="radio" class="custom-control-input" value="false"> 
+                                                        {% endif %}
+                                                        <label for="is_test_mode_active_1_{{ node.name }}" class="custom-control-label">No</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary"">Save</button>
                                         </form>
@@ -126,14 +155,16 @@
         e.preventDefault();
 
         var id = $(this).attr('id');
-
+  
         var data = { 
             device_name: id,
-            new_name: $(this).find('input').first().val()
+            new_name: $("input[name='name_" + id + "']").val(),
+            new_send_interval: $("input[name='send_interval_" + id + "']").val(),
+            is_test_mode_active: $("input[name='is_test_mode_active_" + id + "']:checked").val()
         }
         
         $.ajax({
-            url: "/changename",
+            url: "/change_peripheralsettings",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

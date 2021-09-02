@@ -17,18 +17,32 @@ def index():
 def node_divs():
     return render_template('nodediv.html', node_info=mqtthandler.divs)
 
-@main.route('/changename', methods=['POST'])
-def change_name():
+@main.route('/change_peripheralsettings', methods=['POST'])
+def change_settings():
     try:
         data = request.json
-        new_name = data.get('Data').get('new_name')
         device_name = data.get('Data').get('device_name')
+        new_name = data.get('Data').get('new_name')
+        new_send_interval = data.get('Data').get('new_send_interval')
+        is_test_mode_active = data.get('Data').get('is_test_mode_active')
+        if is_test_mode_active == "true":
+            is_test_mode_active_bool = True
+        else:
+            is_test_mode_active_bool = False
+        
+        for div in mqtthandler.divs:
+            if device_name == div['name']:
+                if new_name != device_name:
+                    mqtthandler.peripheral_node_name_update(device_name, new_name)
+                if new_send_interval != div['send_interval']:
+                    mqtthandler.peripheral_node_change_send_interval(device_name, new_send_interval)
+                if is_test_mode_active_bool != div['is_test_mode_active']:
+                    mqtthandler.peripheral_node_test_mode_update(device_name, is_test_mode_active)
 
-        mqtthandler.peripheral_node_name_update(device_name, new_name)
     except:
-        return Response("Error in changing name.", status=400)
+        return Response("Error in changing peripheral settings.", status=400)
 
-    return Response("Name changed successfully.", status=200)
+    return Response("Peripheral settings changed successfully.", status=200)
 
 @main.route('/changeactiveself', methods=['POST'])
 def change_activeself():

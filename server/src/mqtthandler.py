@@ -17,12 +17,13 @@ topic ns/arduino_send:
 2) node_introduction command:
 {
 "cmd":"node_introduction",
-"device_name": sth,
-"sensor_type": sth,
-"is_active": true
-"old_name": "-"
+"device_name": "sth",
+"sensor_type": "sth",
+"is_active": "true",
+"old_name": "-",
+"send_interval": "0.5",
+"is_test_mode_active": "false"
 }
-
 ~~~~~~~~~~~~~~~~~~~~~~~~
 topic ns/arduino_change:
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,24 +46,39 @@ topic ns/arduino_change:
 "cmd": "introduction_request"
 }
 
+
+3) test_mode command:
+{
+"cmd":"test_mode",
+"device_name": sth,
+"is_active": "true"
+}
+
+4) change_send_interval command:
+{
+"cmd":"change_send_interval",
+"device_name": sth,
+"interval": "0.5"  
+}
+
 ~~~~~~~~~~~~~~~~~~~~~~~~
 topic ns/raspberry_change:
 ~~~~~~~~~~~~~~~~~~~~~~~~
-6) change_sensor_minmax [1/2 done]
+6) change_sensor_minmax
 {
 "cmd": "change_sensor_minmax",
 "min": "12",
 "max": "54"
 }
 
-7) change_scale (note and type) [1/2 done]
+7) change_scale (note and type)
 {
 "cmd": "change_scale",
 "scale_name": "c#",
 "scale_type": "minor"
 }
 
-8) change_octave_range [1/2 done]
+8) change_octave_range
 {
 "cmd":"change_octave_range",
 "start_octave":"2",
@@ -75,7 +91,7 @@ topic ns/raspberry_change:
 "isactive":"true"
 }
 
-10) change_sound_out_active [1/2 done]
+10) change_sound_out_active
 {
 "cmd":"change_sound_out_active",
 "isactive":"true"
@@ -87,13 +103,13 @@ topic ns/raspberry_change:
 "isactive":"true"
 }
 
-12) change_sound_wavetype [1/2 done]
+12) change_sound_wavetype
 {
 "cmd":"change_sound_wavetype",
 "wave_type":"sine"
 }
 
-13) change_sound_duration [1/2 done]
+13) change_sound_duration
 {
 "cmd":"change_sound_duration",
 "duration":"0.5"
@@ -128,6 +144,13 @@ def peripheral_node_activeself_update(device_name, activeself):
 
 def peripheral_introduction_request():
     client_object.publish(topic[1], json.dumps({'cmd':'introduction_request'}), 0)
+
+def peripheral_node_test_mode_update(device_name, isactive):
+    client_object.publish(topic[1], json.dumps({'cmd':'change_test_mode_active', 'device_name': device_name, 'isactive': isactive}), 0)
+
+def peripheral_node_change_send_interval(device_name, interval):
+    client_object.publish(topic[1], json.dumps({'cmd':'change_send_interval', 'device_name': device_name, 'interval': interval}), 0)
+
 
 """
 COMMANDS FOR PROCESSING NODE
@@ -183,7 +206,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
-    # try:
+
     data = json.loads(msg.payload.decode())
 
     if msg.topic == topic[0]:
@@ -192,13 +215,21 @@ def on_message(client, userdata, msg):
         name = data.get('device_name')
         
         if cmd == "node_introduction":
-
+            print(data)
             sensor_type = data.get('sensor_type')
             is_active = data.get('is_active')
             if is_active=="true":
                 is_active_bool = True
             elif is_active == "false":
                 is_active_bool = False
+            
+            send_interval = str(data.get('send_interval'))
+
+            is_test_mode_active = data.get('is_test_mode_active')
+            if is_test_mode_active=="true":
+                is_test_mode_active_bool = True
+            elif is_test_mode_active == "false":
+                is_test_mode_active_bool = False
             
             # there is a new name we haven't seen before. it's either a new device or a device we know but with a new name
             if name not in names:
@@ -208,31 +239,34 @@ def on_message(client, userdata, msg):
                 if old_name == "-":
                     print("Node \"" + name + "\" didn't exist before. Added to list now.")
                     names.append(name)
-                    divs.append({"name": name, "sensor_type": sensor_type, "is_active": is_active_bool})
+                    divs.append({"name": name, "sensor_type": sensor_type, "is_active": is_active_bool, "send_interval": send_interval, "is_test_mode_active":is_test_mode_active_bool})
 
                 else:
                     for div in divs:
                         if div['name'] == old_name:
                             div['name'] = name
 
-            
-            ## the name is known. And hasn't changed. So the only reason that this cmd must've been sent is the fact that active self has changed
             else:
                 for div in divs:
-                    if div['name'] == name and div['is_active'] != is_active_bool:
-                        div['is_active'] = is_active_bool
-                        print("Node \"" + name + "'s activity just toggled.")
+                    if div['name'] == name:
+                        if div['is_active'] != is_active_bool:
+                            div['is_active'] = is_active_bool
+                            print("Node \"" + name + "'s activity just toggled.")
                     
+                        if div['send_interval'] != send_interval:
+                            div['send_interval'] = send_interval
+                            print("Node \"" + name + "'s send interval changed.")
+
+                        if div['is_test_mode_active'] != is_test_mode_active_bool:
+                            div['is_test_mode_active'] = is_test_mode_active_bool
+                            print("Node \"" + name + "'s test mode toggled.")
+
         
         if cmd == "value_share":
             
             val = data.get('val')
+            print("[sensor value] " + name + "/ " + str(val))
 
-                # show in the div
-                # it can be done easily with ajax but doesn't it must be with socket to work properly and seamlessly
-
-    # except:
-    #     print("Message parse error...")
 
     if msg.topic == topic[2]:
         

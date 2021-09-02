@@ -7,11 +7,13 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <NewPing.h>
 
 ////////////////////////////////////////
 
 const char* DEVICE_NAME = "NODE-ARD-AMESTERDAM";
 const char* DEVICE_SENSOR_TYPE = "Light";
+bool IS_SENSORD_DIGITAL = true;
 
 const char* MQTT_SERVER = "";
 int MQTT_PORT = 8883;
@@ -21,16 +23,29 @@ const char* MQTT_PASSWORD = "";
 const char* NETWORK_SSID = "Amu";
 const char* NETWORK_PASSWORD = "amuamuamu";
 
-int SENDING_DELAY_MILLISEC = 1000;
+///////////////////////////////////////
+
+//#define TRIGGER_PIN 11
+//#define ECHO_PIN 8
+//#define MAX_DISTANCE 200
+
+//NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+#define SENSOR_PIN 0
 
 ///////////////////////////////////////
 
+bool DEVICE_TESTMODE_ACTIVE = false;
+const char* DEVICE_TESTMODE_ACTIVE_STR = "false";
+float DEVICE_SEND_INTERVAL = 1;
 bool DEVICE_ACTIVESELF = true;
 const char* DEVICE_ACTIVESELF_STR = "true";
 const char* DEVICE_OLD_NAME = "-";
 bool deviceNameChanged = false;
 bool deviceActiveselfChanged = false;
 bool deviceMustIntroduce = false;
+bool deviceTestModeActiveChanged = false;
+bool deviceSendIntervalChanged = false;
 
 ////////////////////////////////////////
 
@@ -49,10 +64,6 @@ STATE prev_state;
 
 # define NUM_TOPICS (2)
 const char* topics[NUM_TOPICS] = {"ns/arduino_send", "ns/arduino_change"};
-const char* commands[NUM_TOPICS][2] = {{"value_share", "node_introduction"},
-  {"change_active_self", "change_name"}
-};
-
 
 
 ////////////////////////////////////////
@@ -82,7 +93,7 @@ void loop()
   }
   client.loop();
 
-  if (deviceNameChanged || deviceActiveselfChanged || deviceMustIntroduce)
+  if (deviceNameChanged || deviceActiveselfChanged || deviceMustIntroduce || deviceTestModeActiveChanged || deviceSendIntervalChanged)
     state = SETUP;
 
   if (state == SENDING)
@@ -113,31 +124,34 @@ void startup()
 
 void handleSetupState()
 {
+  bool next_state_is_pause = false;
 
   // set the next state
-  if (deviceNameChanged) {
-    state = SENDING;
-    deviceNameChanged = false;
-  }
-  else if (deviceActiveselfChanged)
+  if (deviceActiveselfChanged)
   {
-    if (DEVICE_ACTIVESELF)
-      state = SENDING;
-    else
-      state = PAUSE;
-
+    if (!DEVICE_ACTIVESELF)
+      next_state_is_pause = true;
     deviceActiveselfChanged = false;
   }
-  else
-  {
-    state = SENDING;
+
+  if (deviceNameChanged) {
+    deviceNameChanged = false;
   }
 
   if (deviceMustIntroduce)
-  {
     deviceMustIntroduce = false;
-  }
-  
+  if (deviceTestModeActiveChanged)
+    deviceTestModeActiveChanged = false;
+  if (deviceSendIntervalChanged)
+    deviceSendIntervalChanged = false;
+
+  if (next_state_is_pause)
+    state = PAUSE;
+  else
+    state = SENDING;
+
+
+
   // send the node_introduction command to ns/arduino_send
   String command = make_cmd__node_introduction();
   client.publish(topics[0], command.c_str());
@@ -145,22 +159,32 @@ void handleSetupState()
   Serial.println(command);
   Serial.println("Sent the introduction command...");
 
-  delay(SENDING_DELAY_MILLISEC);
+  delay(DEVICE_SEND_INTERVAL * 1000);
 }
 
 void handleSendingState()
 {
-  // read sensor data
+
   float value = 0; // change thissssss
 
-  // publish value_share command
-  
-    String command = make_cmd__value_share(value);
-    Serial.println(command);
-    client.publish(topics[0], command.c_str());
+  if (!DEVICE_TESTMODE_ACTIVE)
+  {
+    //value = sonar.ping_cm();
+    value = analogRead(SENSOR_PIN);
+  }
+  else
+  {
+    value = random(1000);
+  }
 
-    delay(SENDING_DELAY_MILLISEC);
-  
+  // publish value_share command
+
+  String command = make_cmd__value_share(value);
+  Serial.println(command);
+  client.publish(topics[0], command.c_str());
+
+  delay(DEVICE_SEND_INTERVAL * 1000);
+
 }
 
 
@@ -262,6 +286,8 @@ String make_cmd__node_introduction()
   doc["sensor_type"] = DEVICE_SENSOR_TYPE;
   doc["is_active"] = DEVICE_ACTIVESELF_STR;
   doc["old_name"] = DEVICE_OLD_NAME;
+  doc["send_interval"] = DEVICE_SEND_INTERVAL;
+  doc["is_test_mode_active"] = DEVICE_TESTMODE_ACTIVE_STR;
 
   serializeJson(doc, res);
 
@@ -287,28 +313,28 @@ void decode_cmd(char* payload, int plength)
   String device_name_str(device_name);
   String cmd_str(cmd);
 
-  
+
   if (cmd_str.equals("introduction_request"))
   {
     deviceMustIntroduce = true;
     return;
   }
-  
+
   if (!device_name_str.equals(DEVICE_NAME))
     return;
-  
+
   if (cmd_str.equals("value_share"))
   {
     return;
   }
-  
+
   Serial.println("Recieved a command for this device...");
-    
+
   if (cmd_str.equals("change_active_self"))
   {
     const char* activeself = doc["activeself"];
     String activeself_str(activeself);
-    
+
     if ((activeself_str.equals("true") && DEVICE_ACTIVESELF == false) ||
         (activeself_str.equals("false") && DEVICE_ACTIVESELF == true))
     {
@@ -343,10 +369,50 @@ void decode_cmd(char* payload, int plength)
     const char* new_name = doc["new_name"];
     DEVICE_OLD_NAME = DEVICE_NAME;
     DEVICE_NAME = new_name;
-    
+
     Serial.println("Device got a name change command...");
-    
+
     deviceNameChanged = true;
+  }
+
+  else if (cmd_str.equals("change_test_mode_active"))
+  {
+    const char* isactive = doc["isactive"];
+    String isactive_str(isactive);
+    if ((isactive_str.equals("true") && DEVICE_TESTMODE_ACTIVE == false) ||
+        (isactive_str.equals("false") && DEVICE_TESTMODE_ACTIVE == true))
+    {
+      if (isactive_str.equals("true"))
+      {
+        DEVICE_TESTMODE_ACTIVE = true;
+        DEVICE_TESTMODE_ACTIVE_STR = "true";
+
+        Serial.println("Device test mode enabled...");
+      }
+
+      else if (isactive_str.equals("false"))
+      {
+        DEVICE_TESTMODE_ACTIVE = false;
+        DEVICE_TESTMODE_ACTIVE_STR = "false";
+
+        Serial.println("Device test mode disabled...");
+      }
+
+      deviceTestModeActiveChanged = true;
+    }
+
+    else
+    {
+      Serial.println("Device was already in a state that the command mentioned. So no change...");
+    }
+  }
+
+  else if (cmd_str.equals("change_send_interval"))
+  {
+    const char* interval = doc["interval"];
+    String interval_str(interval);
+    DEVICE_SEND_INTERVAL = interval_str.toFloat();
+    deviceSendIntervalChanged = true;
   }
 }
 
