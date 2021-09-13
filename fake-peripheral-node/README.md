@@ -13,7 +13,5 @@ $ source venv/bin/activate
 After that, everytime you want to run the code inside Raspberry Pi, run these:
 ```
 $ source venv/bin/activate
-(venv)$ export FLASK_APP=src
-(venv)$ export FLASK_DEBUG=1
-(venv)$ flask run # or flask run --host 0.0.0.0 --port 5002
+(venv)$ ./run.sh
 ```
