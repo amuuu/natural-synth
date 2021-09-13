@@ -9,9 +9,6 @@ load_dotenv()
 
 ###############
 
-
-###############
-
 def generate_value():
     return random.randrange(MIN_VAL, MAX_VAL)
 
@@ -22,6 +19,7 @@ def share_value(val):
         'device_name': DEVICE_NAME,
         'val': str(val)
     }), 0)
+
 ###############
 
 print("Fake node program started running...")
@@ -34,7 +32,7 @@ client.username_pw_set(os.getenv('MQTT_USER'), os.getenv('MQTT_PASS'))
 client.connect(os.getenv('MQTT_URL'), int(os.getenv('MQTT_PORT')))
 # client.loop_forever()
 client.loop_start()
-# print(client)
+
 print("Setup complete. Started sending values...")
 
 
