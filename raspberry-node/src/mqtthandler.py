@@ -59,14 +59,8 @@ def on_message(client, userdata, msg):
                 
             anaylze_add_add_to_buffers(float_val)
 
-            # except:
-            #     print("[mqtt handler] Error in parsing value: " + str(data.get('val')) + "...")
 
     if msg.topic == topic[1]:
-        
-        # print("$$$$$$$$$$$$$$$$$ RAW DATA $$$$$$$$$$$$$$$$$$$$$")
-        # print(data)
-        # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 
         cmd = data.get('cmd')
         sth_was_modified = False

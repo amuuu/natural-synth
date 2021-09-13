@@ -1,27 +1,36 @@
 from synthesizer import Player, Synthesizer, Waveform
-import math
+import math,time
 
 
 sound_buffer = []
 _waveform_name_obj_dict = {}
+_freq_cache = {}
+
+player = Player()
+player.open_stream()
+synthesizer = Synthesizer(osc1_waveform=Waveform.sine, osc1_volume=1, use_osc2=False)
 
 def init():
     _init_waveform_name_to_obj_dict()
 
 def play(note, duration, volume, waveform_type):
-    player = Player()
-    player.open_stream()
-    synthesizer = Synthesizer(osc1_waveform=_waveform_name_obj_dict[waveform_type], osc1_volume=volume, use_osc2=False)
+    # synthesizer = Synthesizer(osc1_waveform=_waveform_name_obj_dict[waveform_type], osc1_volume=volume, use_osc2=False)
     player.play_wave(synthesizer.generate_constant_wave(_note_to_frequency(note), duration))
-    #time.sleep(duration)
+    time.sleep(duration)
 
 def _note_to_frequency(note):
-    #check this function
-    const = 1.059463 # A above the middle C / A4=57(midi)
-    base_freq = 440.0
-    distance_to_basenote = note - 57
-    res = base_freq * math.pow(const, distance_to_basenote)
-    return res
+    global _freq_cache
+
+    if note in _freq_cache:
+        return _freq_cache[note]
+    else:
+        print("[sound handler] note to freq cache miss")
+        const = 1.059463 # A above the middle C / A4=57(midi)
+        base_freq = 440.0
+        distance_to_basenote = note - 57
+        res = base_freq * math.pow(const, distance_to_basenote)
+        _freq_cache[note] = res
+        return res
 
 def _init_waveform_name_to_obj_dict():
     _waveform_name_obj_dict['sine'] = Waveform.sine

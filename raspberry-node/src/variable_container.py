@@ -4,8 +4,8 @@
 #                             #
 ###############################
 
-max_sensor_val = 200
-min_sensor_val = 100
+max_sensor_val = 2000
+min_sensor_val = 1
 should_update_range = False
 
 ###############################
@@ -44,7 +44,7 @@ is_midi_out_active = False
 ###############################
 
 sound_wave_type = 'sine'
-sound_duration = 0.5
+sound_duration = 0.2
 
 ###############################
 #                             #

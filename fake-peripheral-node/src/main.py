@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 import os, random, time,json
 
 from mqtthandler import on_connect, on_message
-from variable_container import MAX_VAL, MIN_VAL, PRINT_VALUES, DEVICE_NAME
+from variable_container import MAX_VAL, MIN_VAL, PRINT_VALUES, DEVICE_NAME, INTERVAL
 
 load_dotenv()
 
@@ -43,7 +43,7 @@ while (True):
     if PRINT_VALUES:
         print("[value share] " + str(val))
     
-    time.sleep(1)
+    time.sleep(INTERVAL)
 
 
 

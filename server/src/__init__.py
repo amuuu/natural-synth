@@ -12,6 +12,16 @@ load_dotenv()
 
 db = SQLAlchemy()
 
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+client.username_pw_set(os.getenv('MQTT_USER'), os.getenv('MQTT_PASS'))
+client.connect(os.getenv('MQTT_URL'), int(os.getenv('MQTT_PORT')))
+# client.loop_forever()
+client.loop_start()
+
+
 def create_app():
     app = Flask(__name__,static_url_path='/static')
 
@@ -19,16 +29,6 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
     db.init_app(app)
-
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
-    client.username_pw_set(os.getenv('MQTT_USER'), os.getenv('MQTT_PASS'))
-    client.connect(os.getenv('MQTT_URL'), int(os.getenv('MQTT_PORT')))
-    # client.loop_forever()
-    client.loop_start()
-    
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
