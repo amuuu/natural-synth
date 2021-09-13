@@ -6,3 +6,7 @@ server/src/db.sqlite
 raspberry-node/src/__pycache__/
 raspberry-node/venv/
 raspberry-node/src/.env
+
+fake-peripheral-node/src/__pycache__/
+fake-peripheral-node/venv/
+fake-peripheral-node/src/.env

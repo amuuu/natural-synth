@@ -52,5 +52,5 @@ sound_duration = 0.5
 #                             #
 ###############################
 
-midiout_port = 3 
+midiout_port = 2
 midiout_channel = 1
