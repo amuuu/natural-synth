@@ -9,56 +9,75 @@ topic ns/arduino_send:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 1) value_share command:
 {
-"cmd":"value_share",
-"device_name": "sth",
-"val": 12341.23
+    "cmd":"value_share",
+    "device_name": "sth",
+    "sensor_id": "0",
+    "val": 12341.23
 }
 
 2) node_introduction command:
 {
-"cmd":"node_introduction",
-"device_name": "sth",
-"sensor_type": "sth",
-"is_active": "true",
-"old_name": "-",
-"send_interval": "0.5",
-"is_test_mode_active": "false"
+    "cmd":"node_introduction",
+    "device_name": "sth",
+    "sensors":
+    {
+        "0": {
+            "sensor_type": "flame",
+            "should_invert_quantize": "true",
+            "is_active": "true",
+            "sound_wave_type": "sine", // default: sine
+            "sound_intensity": "1.0" // default: 1
+        },
+
+        "1": {
+            "sensor_type": "light",
+            "should_invert_quantize": "false",
+            "is_active": "false",
+            "sound_wave_type": "sine",
+            "sound_intensity": "1.0"
+        }
+    },
+    "is_active": "true",
+    "old_name": "-",
+    "send_interval": "0.5",
+    "is_test_mode_active": "false"
 }
+
 ~~~~~~~~~~~~~~~~~~~~~~~~
 topic ns/arduino_change:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 3) change_active_self command:
 {
-"cmd": "change_active_self",
-"device_name": "sth",
-"activeself": "sth"
+    "cmd": "change_active_self",
+    "target": "-1", // if -1: for whole node, if > -1: for the repsective sensor id.
+    "device_name": "sth",
+    "activeself": "sth"
 }
 
 4) change_name command:
 {
-"cmd": "change_name",
-"device_name": "device",
-"new_name": "new_name"
+    "cmd": "change_name",
+    "device_name": "device",
+    "new_name": "new_name"
 }
 
 5) introduction_request command:
 {
-"cmd": "introduction_request"
+    "cmd": "introduction_request"
 }
-
 
 3) test_mode command:
 {
-"cmd":"test_mode",
-"device_name": sth,
-"is_active": "true"
+    "cmd":"test_mode",
+    "device_name": sth,
+    "is_active": "true"
 }
 
 4) change_send_interval command:
 {
-"cmd":"change_send_interval",
-"device_name": sth,
-"interval": "0.5"  
+    "cmd":"change_send_interval",
+    "device_name": sth,
+    "interval": "0.5"  
 }
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,58 +85,58 @@ topic ns/raspberry_change:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 6) change_sensor_minmax
 {
-"cmd": "change_sensor_minmax",
-"min": "12",
-"max": "54"
+    "cmd": "change_sensor_minmax",
+    "min": "12",
+    "max": "54"
 }
 
 7) change_scale (note and type)
 {
-"cmd": "change_scale",
-"scale_name": "c#",
-"scale_type": "minor"
+    "cmd": "change_scale",
+    "scale_name": "c#",
+    "scale_type": "minor"
 }
 
 8) change_octave_range
 {
-"cmd":"change_octave_range",
-"start_octave":"2",
-"octave_nums":"3"
+    "cmd":"change_octave_range",
+    "start_octave":"2",
+    "octave_nums":"3"
 }
 
 9) change_chord_mode_active 
 {
-"cmd":"change_chord_mode_active",
-"isactive":"true"
+    "cmd":"change_chord_mode_active",
+    "isactive":"true"
 }
 
 10) change_sound_out_active
 {
-"cmd":"change_sound_out_active",
-"isactive":"true"
+    "cmd":"change_sound_out_active",
+    "isactive":"true"
 }
 
 11) change_midi_out_active
 {
-"cmd":"change_midi_out_active",
-"isactive":"true"
+    "cmd":"change_midi_out_active",
+    "isactive":"true"
 }
 
 12) change_sound_wavetype
 {
-"cmd":"change_sound_wavetype",
-"wave_type":"sine"
+    "cmd":"change_sound_wavetype",
+    "wave_type":"sine"
 }
 
 13) change_sound_duration
 {
-"cmd":"change_sound_duration",
-"duration":"0.5"
+    "cmd":"change_sound_duration",
+    "duration":"0.5"
 }
 
 14) introduction_request
 {
-"cmd": "introduction_request"
+    "cmd": "introduction_request"
 }
 
 """
