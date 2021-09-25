@@ -12,11 +12,12 @@ load_dotenv()
 def generate_value():
     return random.randrange(MIN_VAL, MAX_VAL)
 
-def share_value(val):
+def share_value(sensor_id, val):
     client.publish('ns/arduino_send', json.dumps
     ({
         'cmd':'value_share',
         'device_name': DEVICE_NAME,
+        'sensor_id': str(sensor_id),
         'val': str(val)
     }), 0)
 
@@ -38,10 +39,12 @@ print("Setup complete. Started sending values...")
 
 while (True):
     val = generate_value()
-    share_value(val)
+    sid = random.randint(2)
+    
+    share_value(sid, val)
     
     if PRINT_VALUES:
-        print("[value share] " + str(val))
+        print("[value share] sensor_id: " + str(sid) + " ~ val: " + str(val))
     
     time.sleep(INTERVAL)
 

@@ -12,7 +12,25 @@ def introduction_send():
     ({
         'cmd':'node_introduction',
         'device_name': DEVICE_NAME,
-        'sensor_type': 'Fake',
+        'sensors':
+        {
+            '0':
+            {
+                'sensor_type': 'FakeSensor1',
+                'should_invert_quantize': 'false',
+                'is_active': 'true',
+                'sound_wave_type': 'sine',
+                'sound_intensity': '1.0'
+            },
+            '1':
+            {
+                'sensor_type': 'FakeSensor2',
+                'should_invert_quantize': 'false',
+                'is_active': 'true',
+                'sound_wave_type': 'square',
+                'sound_intensity': '1.0'
+            }
+        },
         'is_active': 'true',
         'old_name': '-',
         'send_interval': str(INTERVAL),
